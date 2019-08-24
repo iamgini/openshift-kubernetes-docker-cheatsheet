@@ -306,7 +306,7 @@ oc port-forward POD_NAME 3306:3306
 
 |OpenShift | Kubernetes| Remarks |
 | --- | --- | --- |
-| `oc scale dc/APP_NAME --replicas=2`| na | scale application (increase or decrease replicas) |
+| `oc scale dc/APP_NAME --replicas=2` | `kubectl scale --replicas=6 replicaset myapp-replicaset` | scale application (increase or decrease replicas) |
 
 
 ```
