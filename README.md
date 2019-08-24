@@ -317,6 +317,7 @@ oc describe hpa/my-app
 **Kubernetes**
 ```
 kubectl create -f replicaset-defenition.yml
+                                # create replicaset
 kubectl replace -f replicaset-defenition.yml
                                 # change the replicas option in replicaset defenition
                                 # and then run it
