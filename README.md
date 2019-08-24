@@ -316,12 +316,16 @@ oc describe hpa/my-app
 
 **Kubernetes**
 ```
-#changing the ```replicas``` option in replicaset defenition. And then run 
+kubectl create -f replicaset-defenition.yml
 kubectl replace -f replicaset-defenition.yml
+                                # change the replicas option in replicaset defenition
+                                # and then run it
 kubectl scale --replicas=6 -f replicaset-defenition.yml
 kubectl scale --replicas=6 replicaset myapp-replicaset
                                 # this one will not update replica details 
                                 # in replicaset defenition file
+kubectl delete replicaset myapp-replicaset
+                                # delete replicaset                                 
 ```
 
 ## Configuration Maps (ConfigMap)
