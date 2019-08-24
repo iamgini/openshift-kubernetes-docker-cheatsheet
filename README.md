@@ -1,5 +1,5 @@
 # openshift-kubernetes-docker-cheatsheet
-### Comprehensive cheatsheet for OpenShift, Kubernetes and Docker
+### Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker
 
 [LinkedIn](http://bit.ly/gineesh) | [www.techbeatly.com](https://www.techbeatly.com)
 
@@ -112,6 +112,7 @@ oc export svc/myapp -o json
 
 ```
 ## Managing pods
+Get pods, Rollout, delete etc.
 ```
 oc get pods                   # list running pods inside a project
 oc get pods -o wide           # detailed listing of pods
@@ -123,8 +124,6 @@ oc get po POD_NAME -o=jsonpath="{..uid}"
                               # get othe pod uid details
 oc adm manage-node NODE_NAME --list-pods
                               # list all pods running on specific node
-oc scale dc/APP_NAME --replicas=2                              
-                              # scale application (increase or decrease replicas)
 oc rollout history dc/<name>  # available revisions
 oc rollout latest hello       # deploy a new version of app.
 oc rollout undo dc/<name>     # rollback to the last successful deployed revision of your configuration
@@ -302,9 +301,16 @@ oc expose service myapache --name=myapache --hostname=myapache.app.cloudapps.exa
 oc port-forward POD_NAME 3306:3306
                                 # temporary port-forwarding to a port from local host.
 ```   
-## Auto scaling of the pod - HorizontalPodAutoscaler
+
+## Auto Scaling of the pod - HorizontalPodAutoscaler
+|OpenShift | Kubernetes| Remarks |
+| --- | --- | --- |
+| `oc scale dc/APP_NAME --replicas=2`| na | scale application (increase or decrease replicas) |
+
 
 ```
+oc scale dc/APP_NAME --replicas=2                              
+                              # 
 oc autoscale dc my-app --min 1 --max 4 --cpu-percent=75
                                 # enable autoscaling for my-app
 oc get hpa my-app               # list Horizontal Pod Autoscaler
