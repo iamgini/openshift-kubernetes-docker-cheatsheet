@@ -302,21 +302,28 @@ oc port-forward POD_NAME 3306:3306
                                 # temporary port-forwarding to a port from local host.
 ```   
 
-## Auto Scaling of the pod - HorizontalPodAutoscaler
+## Scaling & AutoScaling of the pod - HorizontalPodAutoscaler
 
-|OpenShift | Kubernetes| Remarks |
-| --- | --- | --- |
-| `oc scale dc/APP_NAME --replicas=2` | `kubectl scale --replicas=6 replicaset myapp-replicaset` | scale application (increase or decrease replicas) |
-
-
+**OpenShift**
 ```
 oc scale dc/APP_NAME --replicas=2                              
-                              # 
+                                # scale application (increase or decrease replicas)
 oc autoscale dc my-app --min 1 --max 4 --cpu-percent=75
                                 # enable autoscaling for my-app
 oc get hpa my-app               # list Horizontal Pod Autoscaler
 oc describe hpa/my-app
 ```
+
+**Kubernetes**
+```
+#changing the ```replicas``` option in replicaset defenition. And then run 
+kubectl replace -f replicaset-defenition.yml
+kubectl scale --replicas=6 -f replicaset-defenition.yml
+kubectl scale --replicas=6 replicaset myapp-replicaset
+                                # this one will not update replica details 
+                                # in replicaset defenition file
+```
+
 ## Configuration Maps (ConfigMap)
 
 - Similar to secrets, but with non-sensitive text-based configuration
