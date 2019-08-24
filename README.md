@@ -303,6 +303,7 @@ oc port-forward POD_NAME 3306:3306
 ```   
 
 ## Auto Scaling of the pod - HorizontalPodAutoscaler
+
 |OpenShift | Kubernetes| Remarks |
 | --- | --- | --- |
 | `oc scale dc/APP_NAME --replicas=2`| na | scale application (increase or decrease replicas) |
