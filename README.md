@@ -1,5 +1,5 @@
 # openshift-kubernetes-docker-cheatsheet
-###Comprehensive cheatsheet for OpenShift, Kubernetes and Docker
+### Comprehensive cheatsheet for OpenShift, Kubernetes and Docker
 
 [LinkedIn](http://bit.ly/gineesh) | [www.techbeatly.com](https://www.techbeatly.com)
 
