@@ -368,6 +368,7 @@ oc describe pod nodejs-ex-27-mqurr
 ## The replication controller
 <to be done>
 
+```
 oc describe RESOURCE RESOURCE_NAME
 
 oc export
@@ -397,9 +398,7 @@ oc cluster up \
   --host-config-dir=... \
   --use-existing-config
 
-```
 
-```
 
 
 oc project myproject
@@ -472,7 +471,7 @@ oc describe dc cotd
 
 ## Pipelines
 
-
+```
 
 
 oc new-app jenkins-pipeline-example
