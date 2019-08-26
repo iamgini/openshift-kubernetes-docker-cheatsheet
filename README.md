@@ -366,7 +366,7 @@ oc describe pod nodejs-ex-27-mqurr
 ```
 
 ## The replication controller
-<to be done>
+*to be done*
 
 ```
 oc describe RESOURCE RESOURCE_NAME
