@@ -1,5 +1,6 @@
 # 1. OpenShift-Kubernetes-Docker-Cheatsheet
-** Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker **
+
+Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker
 
 [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
