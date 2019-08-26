@@ -1,12 +1,11 @@
 # 1. OpenShift-Kubernetes-Docker-Cheatsheet
-### 1.0.1. Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker
+** Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker **
 
 [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
 <!-- TOC -->
 
 - [1. OpenShift-Kubernetes-Docker-Cheatsheet](#1-openshift-kubernetes-docker-cheatsheet)
-    - [1.0.1. Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker](#101-comprehensive-cli-cheatsheet-for-openshift-kubernetes-and-docker)
   - [1.1. OpenShift  CLI - Installation](#11-openshift--cli---installation)
   - [1.2. Get Help](#12-get-help)
   - [1.3. Build from image](#13-build-from-image)
