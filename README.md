@@ -4,46 +4,46 @@ Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker
 
 [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
-<!-- TOC depthFrom:2 depthTo:3 orderedList:false -->
+<!-- TOC depthFrom:2 depthTo:4 orderedList:false -->
 
-- [1.1. OpenShift  CLI - Installation](#11-openshift--cli---installation)
-- [1.2. Get Help](#12-get-help)
-- [1.3. Build from image](#13-build-from-image)
-- [1.4. Enable/Disable scheduling](#14-enabledisable-scheduling)
-- [1.5. Resource quotas](#15-resource-quotas)
-- [1.6. Labels & Annotations](#16-labels--annotations)
-- [1.7. Limit ranges](#17-limit-ranges)
-- [1.8. ClusterQuota or ClusterResourceQuota](#18-clusterquota-or-clusterresourcequota)
-- [1.9. Config View](#19-config-view)
-- [1.10. Managing Environment Variables](#110-managing-environment-variables)
-- [1.11. Security Context Constraints](#111-security-context-constraints)
-- [1.12. Services & Routes](#112-services--routes)
-- [1.13. Scaling & AutoScaling of the pod - HorizontalPodAutoscaler](#113-scaling--autoscaling-of-the-pod---horizontalpodautoscaler)
-- [1.14. Configuration Maps (ConfigMap)](#114-configuration-maps-configmap)
-- [1.15. Creation](#115-creation)
-- [1.16. Reading config maps](#116-reading-config-maps)
-- [1.17. Dynamically change the config map](#117-dynamically-change-the-config-map)
-- [1.18. Mounting config map as ENV](#118-mounting-config-map-as-env)
-- [1.19. The replication controller](#119-the-replication-controller)
-- [1.20. Create persistent volume](#120-create-persistent-volume)
-- [1.21. Create volume claim](#121-create-volume-claim)
-- [1.22. Deployments](#122-deployments)
-- [1.23. Deployment strategies](#123-deployment-strategies)
-- [1.24. Rolling](#124-rolling)
-- [1.25. Triggers](#125-triggers)
-- [1.26. Recreate](#126-recreate)
-- [1.27. Custom](#127-custom)
-- [1.28. Lifecycle hooks](#128-lifecycle-hooks)
-- [1.29. Deployment Pod Resources](#129-deployment-pod-resources)
-- [1.30. Blue-Green deployments](#130-blue-green-deployments)
-- [1.31. A/B Deployments](#131-ab-deployments)
-- [1.32. Canary Deployments](#132-canary-deployments)
-- [1.33. Rollbacks](#133-rollbacks)
-- [1.34. Pipelines](#134-pipelines)
+- [1. OpenShift  CLI - Installation](#1-openshift--cli---installation)
+- [2. Get Help](#2-get-help)
+- [3. Build from image](#3-build-from-image)
+- [4. Enable/Disable scheduling](#4-enabledisable-scheduling)
+- [5. Resource quotas](#5-resource-quotas)
+- [6. Labels & Annotations](#6-labels--annotations)
+- [7. Limit ranges](#7-limit-ranges)
+- [8. ClusterQuota or ClusterResourceQuota](#8-clusterquota-or-clusterresourcequota)
+- [9. Config View](#9-config-view)
+- [10. Managing Environment Variables](#10-managing-environment-variables)
+- [11. Security Context Constraints](#11-security-context-constraints)
+- [12. Services & Routes](#12-services--routes)
+- [13. Scaling & AutoScaling of the pod - HorizontalPodAutoscaler](#13-scaling--autoscaling-of-the-pod---horizontalpodautoscaler)
+- [14. Configuration Maps (ConfigMap)](#14-configuration-maps-configmap)
+- [15. Creation](#15-creation)
+- [16. Reading config maps](#16-reading-config-maps)
+- [17. Dynamically change the config map](#17-dynamically-change-the-config-map)
+- [18. Mounting config map as ENV](#18-mounting-config-map-as-env)
+- [19. The replication controller](#19-the-replication-controller)
+- [20. Create persistent volume](#20-create-persistent-volume)
+- [21. Create volume claim](#21-create-volume-claim)
+- [22. Deployments](#22-deployments)
+- [23. Deployment strategies](#23-deployment-strategies)
+- [24. Rolling](#24-rolling)
+- [25. Triggers](#25-triggers)
+- [26. Recreate](#26-recreate)
+- [27. Custom](#27-custom)
+- [28. Lifecycle hooks](#28-lifecycle-hooks)
+- [29. Deployment Pod Resources](#29-deployment-pod-resources)
+- [30. Blue-Green deployments](#30-blue-green-deployments)
+- [31. A/B Deployments](#31-ab-deployments)
+- [32. Canary Deployments](#32-canary-deployments)
+- [33. Rollbacks](#33-rollbacks)
+- [34. Pipelines](#34-pipelines)
 
 <!-- /TOC -->
 
-## 1.1. OpenShift  CLI - Installation
+## 1. OpenShift  CLI - Installation
 ```oc``` command line tool will be installed on all master and node machines during cluster installation. You can also install oc utility on any other machines which is not part of openshift cluster. 
 Download oc cli tool from : https://www.okd.io/download.html
 
@@ -234,22 +234,22 @@ How to find registry ?
 oc get route -n default       # you can see the registry url
 ```
 
-## 1.2. Get Help
+## 2. Get Help
 ```
 # oc help                     # list oc command help options
 ```
-## 1.3. Build from image
+## 3. Build from image
 ```
 oc new-build openshift/nodejs-010-centos7~https://github.com/openshift/nodejs-ex.git --name='newbuildtest'
 ```
 
-## 1.4. Enable/Disable scheduling
+## 4. Enable/Disable scheduling
 ```
 oadm manage-node mycbjnode --schedulable=false 
                               # Disable scheduling on node
 ```
 
-## 1.5. Resource quotas
+## 5. Resource quotas
 
 Hard constraints how much memory/CPU your project can consume
 
@@ -265,7 +265,7 @@ oc delete quota -n PROJECT_NAME
                               # delete a quota for the project                            
 ```
 
-## 1.6. Labels & Annotations
+## 6. Labels & Annotations
 1. Label examples: release, environment, relationship, dmzbased, tier, node type, user type
     - Identifying metadata consisting of key/value pairs attached to resources
 2. Annotation examples: example.com/skipValidation=true, example.com/MD5checksum-1234ABC, example.com/BUILDDATE=20171217
@@ -281,7 +281,7 @@ oc patch dc myapp --patch '{"spec":{"template":{"nodeselector":{"env":"qa"}}}'
 oc label secret ssl-secret env=test
                               # add label                              
 ```
-## 1.7. Limit ranges
+## 7. Limit ranges
 
 - mechanism for specifying default project CPU and memory limits and requests
 
@@ -290,7 +290,7 @@ oc get limits -n development
 
 oc describe limits core-resource-limits -n development
 ```
-## 1.8. ClusterQuota or ClusterResourceQuota
+## 8. ClusterQuota or ClusterResourceQuota
 Ref: https://docs.openshift.com/container-platform/3.3/admin_guide/multiproject_quota.html
 ```
 oc create clusterquota for-user-developer --project-annotation-selector openshift.io/requester=developer --hard pods=8
@@ -298,12 +298,12 @@ oc get clusterresourcequota |grep USER
                               # find the clusterresourcequota for USER
 oc describe clusterresourcequota USER
 ```
-## 1.9. Config View
+## 9. Config View
 ```
 oc config view                  # command to view your current, full CLI configuration
                                   also can see the cluster url, project url etc.
 ```
-## 1.10. Managing Environment Variables
+## 10. Managing Environment Variables
 https://docs.openshift.com/enterprise/3.0/dev_guide/environment_variables.html
 ```
 oc env rc/RC_NAME --list -n PROJECT
@@ -311,7 +311,7 @@ oc env rc/RC_NAME --list -n PROJECT
 oc env rc my-newapp MAX_HEAP_SIZE=128M
                                 # set environment variable for the rc
 ```
-## 1.11. Security Context Constraints
+## 11. Security Context Constraints
 ```
 oc get scc                      # list all seven SCCs
                                       - anyuid
@@ -324,7 +324,7 @@ oc get scc                      # list all seven SCCs
 oc describe scc SCC_NAME        # can see which all service account enabled.                                      
 ```
 
-## 1.12. Services & Routes
+## 12. Services & Routes
 ```
 oc expose service SERVICE_NAME route-name-project-name.default-domain
 or
@@ -341,7 +341,7 @@ oc port-forward POD_NAME 3306:3306
                                 # temporary port-forwarding to a port from local host.
 ```   
 
-## 1.13. Scaling & AutoScaling of the pod - HorizontalPodAutoscaler
+## 13. Scaling & AutoScaling of the pod - HorizontalPodAutoscaler
 
 **OpenShift**
 ```
@@ -368,11 +368,11 @@ kubectl delete replicaset myapp-replicaset
                                 # delete replicaset                                 
 ```
 
-## 1.14. Configuration Maps (ConfigMap)
+## 14. Configuration Maps (ConfigMap)
 
 - Similar to secrets, but with non-sensitive text-based configuration
 
-## 1.15. Creation
+## 15. Creation
 
 ```
 oc create configmap test-config --from-literal=key1=config1 --from-literal=key2=config2 --from-file=filters.properties
@@ -380,13 +380,13 @@ oc create configmap test-config --from-literal=key1=config1 --from-literal=key2=
 oc volume dc/nodejs-ex --add -t configmap -m /etc/config --name=app-config --configmap-name=test-config
 ```
 
-## 1.16. Reading config maps
+## 16. Reading config maps
 
 ```
 oc rsh nodejs-ex-26-44kdm ls /etc/config
 ```
 
-## 1.17. Dynamically change the config map
+## 17. Dynamically change the config map
 
 ```
 oc delete configmap test-config
@@ -396,7 +396,7 @@ oc delete configmap test-config
 <NO NEED FOR MOUNTING AS VOLUME AGAIN>
 ```
 
-## 1.18. Mounting config map as ENV
+## 18. Mounting config map as ENV
 
 ```
 oc set env dc/nodejs-ex --from=configmap/test-config
@@ -404,7 +404,7 @@ oc set env dc/nodejs-ex --from=configmap/test-config
 oc describe pod nodejs-ex-27-mqurr
 ```
 
-## 1.19. The replication controller
+## 19. The replication controller
 *to be done*
 
 ```
@@ -444,7 +444,7 @@ oc project myproject
 
 ```
 
-## 1.20. Create persistent volume
+## 20. Create persistent volume
 
 - Supports stateful applications
 
@@ -452,30 +452,30 @@ oc project myproject
 
 - iSCSI, AWS EBS, NFS etc.
 
-## 1.21. Create volume claim
+## 21. Create volume claim
 
 - Manifests that pods use to retreive and mount the volume into pod at initialization time
 
 - Access modes: REadWriteOnce, REadOnlyMany, ReadWriteMany
 
-## 1.22. Deployments
+## 22. Deployments
 
 
-## 1.23. Deployment strategies
+## 23. Deployment strategies
 
-## 1.24. Rolling
+## 24. Rolling
 
-## 1.25. Triggers
+## 25. Triggers
 
-## 1.26. Recreate
+## 26. Recreate
 
-## 1.27. Custom
+## 27. Custom
 
-## 1.28. Lifecycle hooks
+## 28. Lifecycle hooks
 
-## 1.29. Deployment Pod Resources
+## 29. Deployment Pod Resources
 
-## 1.30. Blue-Green deployments
+## 30. Blue-Green deployments
 
 ```
 oc new-app https://github.com/devops-with-openshift/bluegreen#green --name=green
@@ -485,7 +485,7 @@ oc patch route/bluegreen -p '{"spec":{"to":{"name":"green"}}}'
 oc patch route/bluegreen -p '{"spec":{"to":{"name":"blue"}}}'
 ```
 
-## 1.31. A/B Deployments
+## 31. A/B Deployments
 
 ```
 oc annotate route/ab haproxy.router.openshift.io/balance=roundrobin
@@ -495,9 +495,9 @@ oc set route-backends ab cats=100 city=0
 oc set route-backends ab --adjust city=+10%
 ```
 
-## 1.32. Canary Deployments
+## 32. Canary Deployments
 
-## 1.33. Rollbacks
+## 33. Rollbacks
 
 ```
 oc rollback cotd --to-version=1 --dry-run
@@ -508,7 +508,7 @@ oc describe dc cotd
 ```
 
 
-## 1.34. Pipelines
+## 34. Pipelines
 
 ```
 
