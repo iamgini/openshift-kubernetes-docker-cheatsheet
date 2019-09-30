@@ -99,7 +99,7 @@ oc process                    # process a template into list of resources.
 ```
 ## Controlling Access & Managing Users
 ```
-oc adm create USER_NAME       # create a user
+oc create user USER_NAME       # create a user
 oc adm add-role-to-user ROLE_NAME USERNAME -n PROJECT_NAME
                               # add cluster role to a user
                               # add-role-to-group - to add role to a group
