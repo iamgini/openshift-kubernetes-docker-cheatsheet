@@ -4,44 +4,7 @@ Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker
 
 [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
-<!-- TOC depthFrom:2 depthTo:4 orderedList:false -->
-
-- [1. OpenShift  CLI - Installation](#1-openshift--cli---installation)
-- [2. Get Help](#2-get-help)
-- [3. Build from image](#3-build-from-image)
-- [4. Enable/Disable scheduling](#4-enabledisable-scheduling)
-- [5. Resource quotas](#5-resource-quotas)
-- [6. Labels & Annotations](#6-labels--annotations)
-- [7. Limit ranges](#7-limit-ranges)
-- [8. ClusterQuota or ClusterResourceQuota](#8-clusterquota-or-clusterresourcequota)
-- [9. Config View](#9-config-view)
-- [10. Managing Environment Variables](#10-managing-environment-variables)
-- [11. Security Context Constraints](#11-security-context-constraints)
-- [12. Services & Routes](#12-services--routes)
-- [13. Scaling & AutoScaling of the pod - HorizontalPodAutoscaler](#13-scaling--autoscaling-of-the-pod---horizontalpodautoscaler)
-- [14. Configuration Maps (ConfigMap)](#14-configuration-maps-configmap)
-- [15. Creation](#15-creation)
-- [16. Reading config maps](#16-reading-config-maps)
-- [17. Dynamically change the config map](#17-dynamically-change-the-config-map)
-- [18. Mounting config map as ENV](#18-mounting-config-map-as-env)
-- [19. The replication controller](#19-the-replication-controller)
-- [20. Create persistent volume](#20-create-persistent-volume)
-- [21. Create volume claim](#21-create-volume-claim)
-- [22. Deployments](#22-deployments)
-- [23. Deployment strategies](#23-deployment-strategies)
-- [24. Rolling](#24-rolling)
-- [25. Triggers](#25-triggers)
-- [26. Recreate](#26-recreate)
-- [27. Custom](#27-custom)
-- [28. Lifecycle hooks](#28-lifecycle-hooks)
-- [29. Deployment Pod Resources](#29-deployment-pod-resources)
-- [30. Blue-Green deployments](#30-blue-green-deployments)
-- [31. A/B Deployments](#31-ab-deployments)
-- [32. Canary Deployments](#32-canary-deployments)
-- [33. Rollbacks](#33-rollbacks)
-- [34. Pipelines](#34-pipelines)
-
-<!-- /TOC -->
+<!-- TOC depthFrom:2 depthTo:4 orderedList:false -->autoauto- [1. OpenShift  CLI - Installation](#1-openshift--cli---installation)auto- [2. Get Help](#2-get-help)auto- [3. Build from image](#3-build-from-image)auto- [4. Enable/Disable scheduling](#4-enabledisable-scheduling)auto- [5. Resource quotas](#5-resource-quotas)auto- [6. Labels & Annotations](#6-labels--annotations)auto- [7. Limit ranges](#7-limit-ranges)auto- [8. ClusterQuota or ClusterResourceQuota](#8-clusterquota-or-clusterresourcequota)auto- [9. Config View](#9-config-view)auto- [10. Managing Environment Variables](#10-managing-environment-variables)auto- [11. Security Context Constraints](#11-security-context-constraints)auto- [12. Services & Routes](#12-services--routes)auto- [13. Scaling & AutoScaling of the pod - HorizontalPodAutoscaler](#13-scaling--autoscaling-of-the-pod---horizontalpodautoscaler)auto- [14. Configuration Maps (ConfigMap)](#14-configuration-maps-configmap)auto- [15. Creation](#15-creation)auto- [16. Reading config maps](#16-reading-config-maps)auto- [17. Dynamically change the config map](#17-dynamically-change-the-config-map)auto- [18. Mounting config map as ENV](#18-mounting-config-map-as-env)auto- [19. The replication controller](#19-the-replication-controller)auto- [20. Create persistent volume](#20-create-persistent-volume)auto- [21. Create volume claim](#21-create-volume-claim)auto- [22. Deployments](#22-deployments)auto- [23. Deployment strategies](#23-deployment-strategies)auto- [24. Rolling](#24-rolling)auto- [25. Triggers](#25-triggers)auto- [26. Recreate](#26-recreate)auto- [27. Custom](#27-custom)auto- [28. Lifecycle hooks](#28-lifecycle-hooks)auto- [29. Deployment Pod Resources](#29-deployment-pod-resources)auto- [30. Blue-Green deployments](#30-blue-green-deployments)auto- [31. A/B Deployments](#31-ab-deployments)auto- [32. Canary Deployments](#32-canary-deployments)auto- [33. Rollbacks](#33-rollbacks)auto- [34. Pipelines](#34-pipelines)autoauto<!-- /TOC -->
 
 ## 1. OpenShift  CLI - Installation
 ```oc``` command line tool will be installed on all master and node machines during cluster installation. You can also install oc utility on any other machines which is not part of openshift cluster. 
@@ -736,4 +699,47 @@ docker login -u USER_NAME -p TOKEN REGISTRY_URL
                                 # before we push images, we need to login to docker registry.
 docker login -u developer -p ${TOKEN} docker-registry-default.apps.lab.example.com                                
                                 # TOKEN can be get as TOKEN=$(oc whoami)
+```
+## Docker Commands
+
+Image Handling
+```
+docker create [IMAGE]           # Create a new container from a particular image.
+docker search [term]            # Search the Docker Hub repository for a particular term.
+docker login                    # Log into the Docker Hub repository.
+docker pull [IMAGE]             # Pull an image from the Docker Hub repository.
+docker push [username/image]    # Push an image to the Docker Hub repository.
+docker tag [source] [target]    # Create a target tag or alias that refers to a source image.
+```
+
+Running Containers
+```
+docker start [CONTAINER]        # Start a particular container.
+docker stop [CONTAINER]         # Stop a particular container.
+docker exec -ti [CONTAINER] [command]
+                                # Run a shell command inside a particular container.
+docker run -ti — image [IMAGE] [CONTAINER] [command]
+                                # Create and start a container at the same time, and then run a command inside it.
+docker run -ti — rm — image [IMAGE] [CONTAINER] [command]
+                                # Create and start a container at the same time, 
+                                # run a command inside it, and then remove the container 
+                                # after executing the command.
+docker pause [CONTAINER]        # Pause all processes running within a particular container.
+```
+
+Docker Utilities
+```
+docker history [IMAGE]          # Display the history of a particular image.
+docker ps                       # List all of the containers that are currently running.
+docker version                  # Display the version of Docker that is currently installed on the system.
+docker images                   # List all of the images that are currently stored on the system.
+docker inspect [object]         # Display low-level information about a particular Docker object.
+```
+
+Cleaning Docker Environment
+```
+docker kill [CONTAINER]         # Kill a particular container.
+docker kill $(docker ps -q)     # Kill all containers that are currently running.
+docker rm [CONTAINER]           # Delete a particular container that is not currently running.
+docker rm $(docker ps -a -q)    # Delete all containers that are not currently running.
 ```
