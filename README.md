@@ -50,11 +50,11 @@ Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker
 - [Change triggers](#change-triggers)
 - [OpenShift Builds](#openshift-builds)
     - [Build strategies](#build-strategies)
-- [Build sources](#build-sources)
-- [Build Configurations](#build-configurations)
-- [S2I](#s2i)
+    - [Build sources](#build-sources)
+    - [Build Configurations](#build-configurations)
+    - [S2I](#s2i)
 - [Troubleshooting](#troubleshooting)
-- [Application Management](#application-management)
+- [Integrated logging](#integrated-logging)
 - [Simple metrics](#simple-metrics)
 - [Resource scheduling](#resource-scheduling)
 - [Multiproject quota](#multiproject-quota)
@@ -75,6 +75,23 @@ $ sudo yum install -y atomic-openshift-clients
 Many common oc operations are invoked using the following syntax:
 ```
 $ oc <action> <object_type> <object_name_or_id>
+```
+
+## Basic Structure of OpenShift/Kubernetes defenition file
+```
+apiVersion: v1
+kind: Service
+metadata: 
+  name: my-service
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30008
+  selector:
+    app: myapp
+    type: front-end
 ```
 
 ## Login and Logout
@@ -117,6 +134,15 @@ oc get nodes -L region -L env
                               # show nodes with "region" and "evn" labels
 oc process                    # process a template into list of resources.                              
 ```
+
+## Taints and Tolerations
+```
+kubectl taint nodes node1 app=blue:NoSchedule
+                              # Apply taint on node
+kubectl taint nodes node1 app=blue:NoSchedule-                               
+                              # untaint a node by using "-" at the end.
+```
+
 ## Controlling Access & Managing Users
 ```
 oc create user USER_NAME       # create a user
@@ -176,7 +202,10 @@ Get pods, Rollout, delete etc.
 oc get pods                   # list running pods inside a project
 oc get pods -o wide           # detailed listing of pods
 oc get pod -o name            # for pod names
-oc get pods -n PROJECT_NAME    # list running pods inside a project/name-space
+oc get pods -n PROJECT_NAME   # list running pods inside a project/name-space
+oc get pods --show-labels     # show pod labels
+oc get pods --selector env=dev
+                              # list pods with env=dev
 oc get po POD_NAME -o=jsonpath="{..image}"
                               # get othe pod image details
 oc get po POD_NAME -o=jsonpath="{..uid}"
@@ -185,14 +214,27 @@ oc adm manage-node NODE_NAME --list-pods
                               # list all pods running on specific node
 oc rollout history dc/<name>  # available revisions
 oc rollout latest hello       # deploy a new version of app.
-oc rollout undo dc/<name>     # rollback to the last successful deployed revision of your configuration
+oc rollout undo dc/<name>     # rollback to the last successful 
+                                deployed revision of your configuration
 oc rollout cancel dc/hello    # cancel current depoyment 
 
 oc delete pod POD_NAME -n PROJECT_NAME --grace-period=0 --force
                               # delete a pod forcefully
-                              # if pod still stays in Terminating state, try replace deletionTimestamp: null
-                              # as well as finalizers: null  (it may contain an item foregroundDeletion, remove that)
+                                if pod still stays in Terminating state, 
+                                try replace deletionTimestamp: null
+                                as well as finalizers: null  
+                                (it may contain an item foregroundDeletion, 
+                                remove that)
 ```
+
+### Static Pods
+```
+kubectl run --restart=Never --image=busybox static-busybox --dry-run -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml                                
+                                # Create a static pod named static-busybox 
+                                  that uses the busybox image and 
+                                  the command sleep 1000
+```
+
 ## Managing Docker images
 ```
 docker images --no-trunc --format '{{.ID}} {{.CreatedSince}}' --filter "dangling=true" --filter "before=IMAGE_ID"
@@ -406,7 +448,7 @@ kubectl scale --replicas=6 replicaset myapp-replicaset
                                 # this one will not update replica details 
                                 # in replicaset defenition file
 kubectl delete replicaset myapp-replicaset
-                                # delete replicaset 
+                                # delete replicaset
 ```
 
 ## Configuration Maps (ConfigMap)
@@ -485,7 +527,11 @@ oc project myproject
 - Access modes: REadWriteOnce, REadOnlyMany, ReadWriteMany
 
 ## Deployments
-
+```
+kubectl run blue --image=nginx --replicas=6
+                                # Create a new deployment named blue
+                                  with nginx image and 6 replicas
+```
 
 ## Deployment strategies
 
@@ -525,6 +571,7 @@ oc set route-backends ab --adjust city=+10%
 
 ```
 oc rollback cotd --to-version=1 --dry-run
+                                # Dry run only
 oc rollback cotd --to-version=1
 oc describe dc cotd
 ```
@@ -620,14 +667,14 @@ oc set env dc/nodejs-ex DB_ENV-
 
 - Custom: allows the developer to provide a customized builder image to build runtime image
 
-## Build sources
+### Build sources
 
 - Git
 - Dockerfile
 - Image
 - Binary
 
-## Build Configurations
+### Build Configurations
 
 - contains the details of the chosen build strategy as well as the source
 
@@ -639,7 +686,7 @@ oc get bc/nodejs-ex -o yaml
 - unless specified otherwise, the `oc new-app` command will scan the supplied Git repo. If it finds a Dockerfile, the Docker build strategy will be used; otherwise source strategy will be used and an S2I builder will be configured
 
 
-## S2I
+### S2I
 
 - Components:
 
@@ -669,8 +716,9 @@ oc get bc/nodejs-ex -o yaml
 ```
 oc adm diagnostics
 ```
+- `--dry-run`: To test your command; this will not create the resource, instead, tell you weather the resource can be created and if your command is right.
+- `-o yaml`: to print the output in YAML (or JASON) format.
 
-## Application Management
 
 - Operational layers:
 
@@ -678,7 +726,7 @@ oc adm diagnostics
 2. Cluster operations - cluster managemebt OpenShift/Kubernetes
 3. Application operations - deployments, telemetry, logging
 
-# Integrated logging
+## Integrated logging
 
 - the EFK (Elasticsearch/Fluentd/Kibana) stack aggregates logs from nodes and application pods
 
