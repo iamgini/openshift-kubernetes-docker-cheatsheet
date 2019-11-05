@@ -1,6 +1,9 @@
 # 1. OpenShift-Kubernetes-Docker-Cheatsheet
 
-Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker
+Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker. 
+
+Most of the time `oc` and `kubectl` shares the same command set but some cases we have some differences. 
+- `oc` has support for logging to OpenShift cluster - with `kubectl` you need to create your kubeconfig file with credentials.
 
 [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
@@ -60,6 +63,7 @@ Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker
 - [Multiproject quota](#multiproject-quota)
 - [Essential Docker Commands](#essential-docker-commands)
 - [Docker Commands](#docker-commands)
+- [Technical Jargons](#technical-jargons)
 
 <!-- /TOC -->
 
@@ -740,6 +744,12 @@ oc cluster up --logging=true
 
 ```
 oc cluster up --metrics=true
+
+kubectl top node                # memory and CPU usage on node 
+kubectl top pod                 # memory and CPU usage by pods
+
+# Enable metrics in minikube
+minikube addons enable metrics-server
 ```
 
 ## Resource scheduling
@@ -817,3 +827,38 @@ docker kill $(docker ps -q)     # Kill all containers that are currently running
 docker rm [CONTAINER]           # Delete a particular container that is not currently running.
 docker rm $(docker ps -a -q)    # Delete all containers that are not currently running.
 ```
+
+## Technical Jargons
+```
+OSSM                OpenShift Service Mesh (OSSM)
+                    Istio is the upstream project
+                    - The upstream Istio community installation automatically 
+                      injects the sidecar to namespaces you have labeled.
+                    - Red Hat OpenShift Service Mesh does not automatically 
+                      inject the sidecar to any namespaces, but requires you to 
+                      specify the sidecar.istio.io/inject annotation as 
+                      illustrated in the Automatic sidecar injection section.
+
+CRI-O               Container Runtime Interface
+OCI                 Open Container Initiative
+cgroup              control group
+Jaeger              Distributed Tracing System
+kiali               observability console for Istio
+                    Kiali answers the questions:
+                    -  What microservices are part of my Istio service mesh?
+                    -  How are they connected?
+                    -  How are they performing?
+
+runc                CLI tool for spawning and running 
+                    containers according to the OCI specification.
+FaaS                Function as a Service
+CaaS                Containers as a service          
+                    
+```
+# Points to Remember
+- Docker was started as a project by a company called dotCloud, made available as open source in March 2013.
+- Kubernetes surfaced from work at Google in 2014, and became the standard way of managing containers.
+
+
+# References
+- https://cloudowski.com/articles/10-differences-between-openshift-and-kubernetes/
