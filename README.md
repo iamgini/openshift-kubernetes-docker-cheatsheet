@@ -23,7 +23,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - [Services & Routes](#services--routes)
 - [Scaling & AutoScaling of the pod - HorizontalPodAutoscaler](#scaling--autoscaling-of-the-pod---horizontalpodautoscaler)
 - [Configuration Maps (ConfigMap)](#configuration-maps-configmap)
-- [Creation](#creation)
+- [Creation of objects](#creation-of-objects)
 - [Reading config maps](#reading-config-maps)
 - [Dynamically change the config map](#dynamically-change-the-config-map)
 - [Mounting config map as ENV](#mounting-config-map-as-env)
@@ -61,7 +61,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - [Simple metrics](#simple-metrics)
 - [Resource scheduling](#resource-scheduling)
 - [Multiproject quota](#multiproject-quota)
-- [Essential Docker Commands](#essential-docker-commands)
+- [Essential Docker Registry Commands](#essential-docker-registry-commands)
 - [Docker Commands](#docker-commands)
 - [Technical Jargons](#technical-jargons)
 
@@ -129,13 +129,6 @@ oc delete all -l app=web      # delete all where label app=web
 ```
 oc get all                    # list all resource items
                                 -w  watches the result output in realtime.
-oc get nodes                  # list nodes in a cluster
-oc get node/NODE_NAME -o yaml
-                              # to see a node’s current capacity and allocatable resources
-oc get nodes --show-labels | grep -i "project101=testlab"
-                              # show nodes info with lable and list only node with a lable "project101=testlab"
-oc get nodes -L region -L env
-                              # show nodes with "region" and "evn" labels
 oc process                    # process a template into list of resources.                              
 ```
 
@@ -238,13 +231,32 @@ kubectl run --restart=Never --image=busybox static-busybox --dry-run -o yaml --c
                                   that uses the busybox image and 
                                   the command sleep 1000
 ```
+## Managing Nodes
 
-## Managing Docker images
 ```
-docker images --no-trunc --format '{{.ID}} {{.CreatedSince}}' --filter "dangling=true" --filter "before=IMAGE_ID"
-                              # list image with format and 
-                              # using multiple filters
+oc get nodes                  # list nodes in a cluster
+oc get node/NODE_NAME -o yaml
+                              # to see a node’s current capacity and allocatable resources
+oc get nodes --show-labels | grep -i "project101=testlab"
+                              # show nodes info with lable and list only node with a lable "project101=testlab"
+oc get nodes -L region -L env
+                              # show nodes with "region" and "evn" labels
+
+oadm manage-node compute-102 --schedulable=false
+kubectl cordon node-2
+                              # make a node unschedulable
+oc adm drain compute-102                              
+kubectl drain node-1          # drain node by evicting pods
+                              -–force — force deletion of bare pods
+                              –-delete-local-data — delete even if there are 
+                                pods using emptyDir (local data that will be deleted
+                                when the node is drained)
+                              -–ignore-daemonsets — ignore daemonset-managed pods
+                              
+oadm manage-node compute-102 --schedulable=true
+kubectl uncordon node-1       # enable scheduling on node
 ```
+
 
 ## PV & PVC - PhysicalVolume & PhysicalVolumeClaim
 ``` 
@@ -270,8 +282,12 @@ oc exec  <pd> -i -t -- <command>
 oc get events                 # list events inside cluster
 oc logs POD                   # get logs from pod
 oc logs <pod> --timestamps    
-oc logs -f bc/myappx          
+oc logs -f bc/myappx           
 oc rsh <pod>                  # login to a pod
+
+kubectl logs -f POD_NAME CONTAINER_NAME
+                              # mention container name if you have
+                                more than one container inside pod
 ```
 
 ## Understand and Help
@@ -459,7 +475,7 @@ kubectl delete replicaset myapp-replicaset
 
 - Similar to secrets, but with non-sensitive text-based configuration
 
-## Creation
+## Creation of objects
 
 ```
 oc create configmap test-config --from-literal=key1=config1 --from-literal=key2=config2 --from-file=filters.properties
@@ -535,6 +551,16 @@ oc project myproject
 kubectl run blue --image=nginx --replicas=6
                                 # Create a new deployment named blue
                                   with nginx image and 6 replicas
+kubectl set image deployment/myapp-dc                                
+                                # specify new image to deployment
+kubectl apply -f DEFINITION.YML                                
+                                # apply new config to existing deployment
+kubectl rollout undo deployment/myapp-dc                                
+                                # rollback a deployment
+kubectl rollout status deployment/myapp-dc                                
+                                # status of deployment
+kubectl rollout history deployment/myapp-dc                                
+                                # history of deployment
 ```
 
 ## Deployment strategies
@@ -776,12 +802,19 @@ oc login -u developer -p developer
 oc describe AppliedClusterResourceQuota
 ```
 
-## Essential Docker Commands
+## Essential Docker Registry Commands
 ```
 docker login -u USER_NAME -p TOKEN REGISTRY_URL
-                                # before we push images, we need to login to docker registry.
-docker login -u developer -p ${TOKEN} docker-registry-default.apps.lab.example.com                                
+                                # before we push images, we need to 
+                                  login to docker registry.
+                                  
+docker login -u developer -p ${TOKEN} \
+  docker-registry-default.apps.lab.example.com                                
                                 # TOKEN can be get as TOKEN=$(oc whoami)
+                                
+docker images --no-trunc --format '{{.ID}} {{.CreatedSince}}' --filter "dangling=true" --filter "before=IMAGE_ID"
+                              # list image with format and 
+                              # using multiple filters                                
 ```
 
 ## Docker Commands
