@@ -1,4 +1,4 @@
-# 1. OpenShift-Kubernetes-Docker-Cheatsheet
+# OpenShift-Kubernetes-Docker-Cheatsheet
 
 Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker. 
 
