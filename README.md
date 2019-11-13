@@ -3,7 +3,8 @@
 Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker. 
 
 Most of the time `oc` and `kubectl` shares the same command set but some cases we have some differences. 
-- `oc` has support for logging to OpenShift cluster - with `kubectl` you need to create your kubeconfig file with credentials.
+- `oc` has support for logging to OpenShift cluster 
+- with `kubectl` you need to create your kubeconfig file with credentials.
 
 [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
@@ -27,7 +28,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - [Reading config maps](#reading-config-maps)
 - [Dynamically change the config map](#dynamically-change-the-config-map)
 - [Mounting config map as ENV](#mounting-config-map-as-env)
-- [The replication controller](#the-replication-controller)
+- [The Replication Controller](#the-replication-controller)
 - [Create persistent volume](#create-persistent-volume)
 - [Create volume claim](#create-volume-claim)
 - [Deployments](#deployments)
@@ -169,6 +170,7 @@ oc describe user USER_NAME    # details of a user
 oc adm policy who-can edit pod -n PROJECT_NAME
                               # list details of access
 ```
+
 You can also create user with HTPasswdIdentityProvider module as below.
 ```
 htpasswd -b /etc/origin/master/htpasswd user1 password1
@@ -176,7 +178,23 @@ htpasswd -b /etc/origin/master/htpasswd user1 password1
                               # -b used to take password from command line rather than promopting for it.
 htpasswd -D /etc/origin/master/htpasswd user1
                               # -D deletes user1
-```                              
+```  
+
+### Check Access
+
+```
+kubectl auth can-i create deployments
+                                      # check access 
+kubectl auth can-i create deployments \
+  --as user1
+                                      # check access for a user
+kubectl auth can-i create deployments \
+  --as user1 \
+  --namespace dev                     
+                                      # check access for a user in a namespace
+```
+
+                            
 
 ## oc describe 
 ```
@@ -195,6 +213,7 @@ oc export svc/myapp -o json
 ```
 ## Managing pods
 Get pods, Rollout, delete etc.
+
 ```
 oc get pods                   # list running pods inside a project
 oc get pods -o wide           # detailed listing of pods
@@ -222,6 +241,16 @@ oc delete pod POD_NAME -n PROJECT_NAME --grace-period=0 --force
                                 as well as finalizers: null  
                                 (it may contain an item foregroundDeletion, 
                                 remove that)
+kubectl get pods \
+  --server kubesandbox:6443 \
+  --client-key admin.key \
+  --client-certificate admin.crt \
+  --certificate-authority ca.cert
+                              #  specify credential and certificate details.
+
+kubectl get pods --kubeconfig config                              
+                              # or put those info inside a file `config` \
+                                and call --kubeconfig in command
 ```
 
 ### Static Pods
@@ -397,6 +426,16 @@ oc describe clusterresourcequota USER
 ```
 oc config view                  # command to view your current, full CLI configuration
                                   also can see the cluster url, project url etc.
+
+kubectl config view             # to view the config in ~/.kube/config
+
+kubectl config view --kubeconfig=path-to-config-file
+                                # to view the config
+
+kubectl config use-context dev@singapore-cluster                              
+                                # to change the current-context 
+                                
+kubectl config -h               # to list avaialbe options    
 ```
 
 ## Managing Environment Variables
@@ -506,7 +545,7 @@ oc set env dc/nodejs-ex --from=configmap/test-config
 oc describe pod nodejs-ex-27-mqurr
 ```
 
-## 1The replication controller
+## The Replication Controller
 *to be done*
 
 ```
