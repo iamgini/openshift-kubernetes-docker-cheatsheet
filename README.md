@@ -63,6 +63,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - [Resource scheduling](#resource-scheduling)
 - [Multiproject quota](#multiproject-quota)
 - [Essential Docker Registry Commands](#essential-docker-registry-commands)
+    - [Private Docker Registry and Access](#private-docker-registry-and-access)
 - [Docker Commands](#docker-commands)
 - [Technical Jargons](#technical-jargons)
 
@@ -852,9 +853,23 @@ docker login -u developer -p ${TOKEN} \
                                 # TOKEN can be get as TOKEN=$(oc whoami)
                                 
 docker images --no-trunc --format '{{.ID}} {{.CreatedSince}}' --filter "dangling=true" --filter "before=IMAGE_ID"
-                              # list image with format and 
-                              # using multiple filters                                
+                                # list image with format and 
+                                # using multiple filters                                
 ```
+### Private Docker Registry and Access
+```
+kubectl create secret docker-registry private-docker-cred \
+    --docker-server=myregistry
+    --docker-username=registry-user
+    --docker-password=registry-password
+    --docker-email=registry-user@example.com
+                                # Create a secret for docker-registry
+```
+Then specify the image pull secret under the `imagePullSecrets` of pod/deployment definition (same level of `container`)
+```
+    imagePullSecrets:
+    - name: private-docker-cred
+```        
 
 ## Docker Commands
 
