@@ -65,6 +65,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - [Essential Docker Registry Commands](#essential-docker-registry-commands)
     - [Private Docker Registry and Access](#private-docker-registry-and-access)
 - [Docker Commands](#docker-commands)
+- [Basic Networking](#basic-networking)
 - [Technical Jargons](#technical-jargons)
 
 <!-- /TOC -->
@@ -288,19 +289,21 @@ kubectl uncordon node-1       # enable scheduling on node
 ```
 
 
-## PV & PVC - PhysicalVolume & PhysicalVolumeClaim
+## PV & PVC - PersistentVolume & PersistentVolumeClaim
 ``` 
-oc get pv                     # list all pv in the cluster
-oc create -f mysqldb-pv.yml   # create a pv with template
-oc get pvc -n PROJECT_NAME    # list all pvc in the project
+oc get pv                       # list all pv in the cluster
+oc create -f mysqldb-pv.yml     # create a pv with template
+oc get pvc -n PROJECT_NAME      # list all pvc in the project
 oc set volume dc/mysqldb \
   --add --overwrite --name=mysqldb-volume-1 -t pvc \
   --claim-name=mysqldb-pvclaim \
   --claim-size=3Gi \
   --claim-mode='ReadWriteMany'
-                              # Create volume claim for mysqldb-volume-1
-
+                                # Create volume claim for mysqldb-volume-1
+kubectl get pv
+kubectl get pvc
 ```
+
 ## oc exec - execute command inside a containe
 ```
 oc exec  <pd> -i -t -- <command> 
@@ -913,6 +916,41 @@ docker kill [CONTAINER]         # Kill a particular container.
 docker kill $(docker ps -q)     # Kill all containers that are currently running.
 docker rm [CONTAINER]           # Delete a particular container that is not currently running.
 docker rm $(docker ps -a -q)    # Delete all containers that are not currently running.
+docker network ls               # list available networks
+```
+
+## Basic Networking
+(For docker/kubernetes/openshift operations)
+
+```
+ip link                         # show interface of host
+ip addr add 10.1.10.10/24 dev eth0
+                                # assign IP to an interface
+ip route add 10.1.20.0/24 via 10.1.10.1
+                                # add a route to another network 10.1.20.0/24
+                                  via 10.1.10.1 which is our router/gateway.   
+ip route add default via 10.1.10.1
+                                # add defaulr route to any network; like internet
+                                  you can also mention 0.0.0.0/0 instead of default
+route                           # display kernel routing table
+
+ip netns add newnamespace       # create a new network namespace
+ip netns                        # list network namespaces
+ip netns exec red ping IP_ADDRESS
+ip netns exec newnamespace ip link
+                                # display details inside namespace
+ip link add veth-red type veth peer name veth-blue
+                                # create a pipe or virtual eth (veth) 
+ip link set veth-red netns red  
+                                # attach the virtual interface to a namespace          
+ip -n red addr add 10.1.10.1 dev veth-red
+                                # assign ip for virtual interface (veth) 
+                                  inside a namespace                                
+ip -n red link set veth-red up
+                                # make virtual interface up and running
+ip link add v-net-0 type bridge 
+                                # add linux bridge
+                                                                
 ```
 
 ## Technical Jargons
