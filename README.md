@@ -49,8 +49,8 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - [1.33. Dynamically change the config map](#133-dynamically-change-the-config-map)
 - [1.34. Mounting config map as ENV](#134-mounting-config-map-as-env)
 - [1.35. The Replication Controller](#135-the-replication-controller)
-- [1.36. Create persistent volume](#136-create-persistent-volume)
-- [1.37. Create volume claim](#137-create-volume-claim)
+- [1.36. PersistentVolume](#136-persistentvolume)
+- [1.37. PersistentVolumeClaim](#137-persistentvolumeclaim)
 - [1.38. Deployments](#138-deployments)
 - [1.39. Deployment strategies](#139-deployment-strategies)
 - [1.40. Rolling](#140-rolling)
@@ -85,6 +85,10 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - [1.65. Essential Docker Registry Commands](#165-essential-docker-registry-commands)
   - [1.65.1. Private Docker Registry and Access](#1651-private-docker-registry-and-access)
 - [1.66. Docker Commands](#166-docker-commands)
+  - [1.66.1. Image Handling](#1661-image-handling)
+  - [1.66.2. Running Containers](#1662-running-containers)
+  - [1.66.3. Docker Utilities](#1663-docker-utilities)
+  - [1.66.4. Cleaning Docker Environment](#1664-cleaning-docker-environment)
 - [1.67. Basic Networking](#167-basic-networking)
 - [1.68. Technical Jargons](#168-technical-jargons)
 
@@ -645,19 +649,19 @@ oc cluster up \
 oc project myproject
 ```
 
-## 1.36. Create persistent volume
+## 1.36. PersistentVolume
 
 - Supports stateful applications
 - Volumes backed by shared storage which are mounted into running pods
 - iSCSI, AWS EBS, NFS etc.
 
-## 1.37. Create volume claim
+## 1.37. PersistentVolumeClaim
 
 - Manifests that pods use to retreive and mount the volume into pod at initialization time
-
 - Access modes: REadWriteOnce, REadOnlyMany, ReadWriteMany
 
 ## 1.38. Deployments
+
 ```
 kubectl run blue --image=nginx --replicas=6
                                 # Create a new deployment named blue
@@ -692,9 +696,7 @@ kubectl rollout history deployment/myapp-dc
 
 ```
 oc new-app https://github.com/devops-with-openshift/bluegreen#green --name=green
-
 oc patch route/bluegreen -p '{"spec":{"to":{"name":"green"}}}'
-
 oc patch route/bluegreen -p '{"spec":{"to":{"name":"blue"}}}'
 ```
 
@@ -945,7 +947,8 @@ Then specify the image pull secret under the `imagePullSecrets` of pod/deploymen
 
 ## 1.66. Docker Commands
 
-Image Handling
+### 1.66.1. Image Handling
+
 ```
 docker create [IMAGE]           # Create a new container from a particular image.
 docker search [term]            # Search the Docker Hub repository for a particular term.
@@ -955,7 +958,8 @@ docker push [username/image]    # Push an image to the Docker Hub repository.
 docker tag [source] [target]    # Create a target tag or alias that refers to a source image.
 ```
 
-Running Containers
+### 1.66.2. Running Containers
+
 ```
 docker start [CONTAINER]        # Start a particular container.
 docker stop [CONTAINER]         # Stop a particular container.
@@ -970,7 +974,8 @@ docker run -ti — rm — image [IMAGE] [CONTAINER] [command]
 docker pause [CONTAINER]        # Pause all processes running within a particular container.
 ```
 
-Docker Utilities
+### 1.66.3. Docker Utilities
+
 ```
 docker history [IMAGE]          # Display the history of a particular image.
 docker ps                       # List all of the containers that are currently running.
@@ -979,7 +984,8 @@ docker images                   # List all of the images that are currently stor
 docker inspect [object]         # Display low-level information about a particular Docker object.
 ```
 
-Cleaning Docker Environment
+### 1.66.4. Cleaning Docker Environment
+
 ```
 docker kill [CONTAINER]         # Kill a particular container.
 docker kill $(docker ps -q)     # Kill all containers that are currently running.
