@@ -8,7 +8,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 
 [iamgini.com](https://www.iamgini.com/) \| [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
-<!-- TOC updateonsave:true depthfrom:2 orderedlist:true -->
+<!-- TOC updateonsave:true depthfrom:2 depthto:3 orderedlist:true -->
 
 - [1.1. CLI Installation](#11-cli-installation)
   - [1.1.1. OpenShift CLI Installation](#111-openshift-cli-installation)
