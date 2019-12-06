@@ -10,12 +10,14 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 
 <!-- TOC updateonsave:true depthfrom:2 orderedlist:true -->
 
-- [1.1. OpenShift CLI - Installation](#11-openshift-cli---installation)
+- [1.1. CLI Installation](#11-cli-installation)
+  - [1.1.1. OpenShift CLI Installation](#111-openshift-cli-installation)
+  - [1.1.2. Install and Set Up kubectl](#112-install-and-set-up-kubectl)
 - [1.2. Basic Structure of OpenShift/Kubernetes defenition file](#12-basic-structure-of-openshiftkubernetes-defenition-file)
 - [1.3. Login and Logout](#13-login-and-logout)
 - [1.4. oc status](#14-oc-status)
 - [1.5. Managing Projects](#15-managing-projects)
-- [1.6. Resources](#16-resources)
+- [1.6. Viewing, Finding Resources](#16-viewing-finding-resources)
 - [1.7. Taints and Tolerations](#17-taints-and-tolerations)
 - [1.8. Controlling Access & Managing Users](#18-controlling-access--managing-users)
   - [1.8.1. Check Access](#181-check-access)
@@ -32,7 +34,9 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 
 <!-- /TOC -->
 
-## 1.1. OpenShift CLI - Installation
+## 1.1. CLI Installation
+
+### 1.1.1. OpenShift CLI Installation
 
 `oc` command line tool will be installed on all master and node machines during cluster installation. You can also install oc utility on any other machines which is not part of openshift cluster. 
 Download oc cli tool from : https://www.okd.io/download.html
@@ -47,6 +51,32 @@ Many common oc operations are invoked using the following syntax:
 
 ```
 $ oc <action> <object_type> <object_name_or_id>
+```
+
+### 1.1.2. Install and Set Up kubectl
+
+Download the latest release with the command:
+
+```
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+```
+
+Make the kubectl binary executable.
+
+```
+chmod +x ./kubectl
+```
+
+Move the binary in to your PATH.
+
+```
+sudo mv ./kubectl /usr/local/bin/kubectl
+```
+
+Test to ensure the version you installed is up-to-date:
+
+```
+kubectl version
 ```
 
 ## 1.2. Basic Structure of OpenShift/Kubernetes defenition file
@@ -102,7 +132,8 @@ oc delete all --all           # delete all from a project
 oc delete all -l app=web      # delete all where label app=web
 ```
 
-## 1.6. Resources
+## 1.6. Viewing, Finding Resources
+
 ```
 oc get all                    # list all resource items
                                 -w  watches the result output in realtime.
