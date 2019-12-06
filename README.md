@@ -8,83 +8,51 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 
 [iamgini.com](https://www.iamgini.com/) \| [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
-<!-- TOC depthfrom:2 orderedlist:true -->
+<!-- TOC updateonsave:true depthfrom:2 orderedlist:true -->
 
 - [1.1. OpenShift CLI - Installation](#11-openshift-cli---installation)
-- [1.2. Get Help](#12-get-help)
-- [1.3. Build from image](#13-build-from-image)
-- [1.4. Enable/Disable scheduling](#14-enabledisable-scheduling)
-- [1.5. Resource quotas](#15-resource-quotas)
-- [1.6. Labels & Annotations](#16-labels--annotations)
-- [1.7. Limit ranges](#17-limit-ranges)
-- [1.8. ClusterQuota or ClusterResourceQuota](#18-clusterquota-or-clusterresourcequota)
-- [1.9. Config View](#19-config-view)
-- [1.10. Managing Environment Variables](#110-managing-environment-variables)
-- [1.11. Security Context Constraints](#111-security-context-constraints)
-- [1.12. Services & Routes](#112-services--routes)
-- [1.13. Scaling & AutoScaling of the pod - HorizontalPodAutoscaler](#113-scaling--autoscaling-of-the-pod---horizontalpodautoscaler)
-- [1.14. Configuration Maps (ConfigMap)](#114-configuration-maps-configmap)
-- [1.15. Creation of objects](#115-creation-of-objects)
-- [1.16. Reading config maps](#116-reading-config-maps)
-- [1.17. Dynamically change the config map](#117-dynamically-change-the-config-map)
-- [1.18. Mounting config map as ENV](#118-mounting-config-map-as-env)
-- [1.19. The Replication Controller](#119-the-replication-controller)
-- [1.20. Create persistent volume](#120-create-persistent-volume)
-- [1.21. Create volume claim](#121-create-volume-claim)
-- [1.22. Deployments](#122-deployments)
-- [1.23. Deployment strategies](#123-deployment-strategies)
-- [1.24. Rolling](#124-rolling)
-- [1.25. Triggers](#125-triggers)
-- [1.26. Recreate](#126-recreate)
-- [1.27. Custom](#127-custom)
-- [1.28. Lifecycle hooks](#128-lifecycle-hooks)
-- [1.29. Deployment Pod Resources](#129-deployment-pod-resources)
-- [1.30. Blue-Green deployments](#130-blue-green-deployments)
-- [1.31. A/B Deployments](#131-ab-deployments)
-- [1.32. Canary Deployments](#132-canary-deployments)
-- [1.33. Rollbacks](#133-rollbacks)
-- [1.34. Pipelines](#134-pipelines)
-- [1.35. Configuration Management](#135-configuration-management)
-- [1.36. Secrets](#136-secrets)
-- [1.37. Creation](#137-creation)
-- [1.38. Using secrets in Pods](#138-using-secrets-in-pods)
-- [1.39. ENV](#139-env)
-- [1.40. Adding](#140-adding)
-- [1.41. Removing](#141-removing)
-- [1.42. Change triggers](#142-change-triggers)
-- [1.43. OpenShift Builds](#143-openshift-builds)
-  - [1.43.1. Build strategies](#1431-build-strategies)
-  - [1.43.2. Build sources](#1432-build-sources)
-  - [1.43.3. Build Configurations](#1433-build-configurations)
-  - [1.43.4. S2I](#1434-s2i)
-- [1.44. Troubleshooting](#144-troubleshooting)
-- [1.45. Integrated logging](#145-integrated-logging)
-- [1.46. Simple metrics](#146-simple-metrics)
-- [1.47. Resource scheduling](#147-resource-scheduling)
-- [1.48. Multiproject quota](#148-multiproject-quota)
-- [1.49. Essential Docker Registry Commands](#149-essential-docker-registry-commands)
-  - [1.49.1. Private Docker Registry and Access](#1491-private-docker-registry-and-access)
-- [1.50. Docker Commands](#150-docker-commands)
-- [1.51. Basic Networking](#151-basic-networking)
-- [1.52. Technical Jargons](#152-technical-jargons)
+- [1.2. Basic Structure of OpenShift/Kubernetes defenition file](#12-basic-structure-of-openshiftkubernetes-defenition-file)
+- [1.3. Login and Logout](#13-login-and-logout)
+- [1.4. oc status](#14-oc-status)
+- [1.5. Managing Projects](#15-managing-projects)
+- [1.6. Resources](#16-resources)
+- [1.7. Taints and Tolerations](#17-taints-and-tolerations)
+- [1.8. Controlling Access & Managing Users](#18-controlling-access--managing-users)
+  - [1.8.1. Check Access](#181-check-access)
+- [1.9. oc describe](#19-oc-describe)
+- [1.10. oc export](#110-oc-export)
+- [1.11. Managing pods](#111-managing-pods)
+  - [1.11.1. Static Pods](#1111-static-pods)
+- [1.12. Managing Nodes](#112-managing-nodes)
+- [1.13. PV & PVC - PersistentVolume & PersistentVolumeClaim](#113-pv--pvc---persistentvolume--persistentvolumeclaim)
+- [1.14. oc exec - execute command inside a containe](#114-oc-exec---execute-command-inside-a-containe)
+- [1.15. Events and Troubleshooting](#115-events-and-troubleshooting)
+- [1.16. Understand and Help](#116-understand-and-help)
+- [1.17. Applications](#117-applications)
 
 <!-- /TOC -->
 
 ## 1.1. OpenShift CLI - Installation
-```oc``` command line tool will be installed on all master and node machines during cluster installation. You can also install oc utility on any other machines which is not part of openshift cluster. 
+
+`oc` command line tool will be installed on all master and node machines during cluster installation. You can also install oc utility on any other machines which is not part of openshift cluster. 
 Download oc cli tool from : https://www.okd.io/download.html
 
 On a RHEL system with valid subscription you can install with yum as below.
+
 ```
 $ sudo yum install -y atomic-openshift-clients
 ```
 
 Many common oc operations are invoked using the following syntax:
+
 ```
 $ oc <action> <object_type> <object_name_or_id>
 ```
 
-## Basic Structure of OpenShift/Kubernetes defenition file
+## 1.2. Basic Structure of OpenShift/Kubernetes defenition file
+
+(below one is a service definition)
+
 ```
 apiVersion: v1
 kind: Service
@@ -101,7 +69,8 @@ spec:
     type: front-end
 ```
 
-## Login and Logout
+## 1.3. Login and Logout
+
 ```
 oc login https://10.142.0.2:8443 -u admin -p openshift 
                               # Login to openshift cluster
@@ -109,12 +78,16 @@ oc whoami                     # identify the current login
 oc login -u system:admin      # login to cluster from any master node without a password
 oc logout                     # logout from cluster
 ```
-## oc status
+
+## 1.4. oc status
+
 ```
 oc status -v                  # get oc cluster status
 oc types                      # to list all concepts and types
 ```
-## Managing Projects
+
+## 1.5. Managing Projects
+
 ```
 oc get projects               # list Existing Projects
 oc get project                # Display current project
@@ -128,14 +101,15 @@ oc delete project testlab     # delete a project
 oc delete all --all           # delete all from a project
 oc delete all -l app=web      # delete all where label app=web
 ```
-## Resources
+
+## 1.6. Resources
 ```
 oc get all                    # list all resource items
                                 -w  watches the result output in realtime.
 oc process                    # process a template into list of resources.                              
 ```
 
-## Taints and Tolerations
+## 1.7. Taints and Tolerations
 ```
 kubectl taint nodes node1 app=blue:NoSchedule
                               # Apply taint on node
@@ -143,7 +117,7 @@ kubectl taint nodes node1 app=blue:NoSchedule-
                               # untaint a node by using "-" at the end.
 ```
 
-## Controlling Access & Managing Users
+## 1.8. Controlling Access & Managing Users
 ```
 oc create user USER_NAME       # create a user
 oc adm add-role-to-user ROLE_NAME USERNAME -n PROJECT_NAME
@@ -182,7 +156,7 @@ htpasswd -D /etc/origin/master/htpasswd user1
                               # -D deletes user1
 ```  
 
-### Check Access
+### 1.8.1. Check Access
 
 ```
 kubectl auth can-i create deployments
@@ -198,14 +172,15 @@ kubectl auth can-i create deployments \
 
                             
 
-## oc describe 
+## 1.9. oc describe 
 ```
 oc describe node <node1>      # show deatils of a specific resource
 oc describe pod POD_NAME      # pod details                               
 oc describe svc SERVICE_NAME  # service details                               
 oc describe route ROUTE_NAME  # route details                               
 ```
-## oc export 
+
+## 1.10. oc export 
 ```
 oc export RESOURCE_TYPE RESOURCE_NAME -o OUTPUT_FORMAT
                               # export a definition of a resource (creating a backup etc) in JSON or YAML format.
@@ -213,7 +188,8 @@ oc export pod mysql-1-p1d35 -o yaml
 oc export svc/myapp -o json
 
 ```
-## Managing pods
+
+## 1.11. Managing pods
 Get pods, Rollout, delete etc.
 
 ```
@@ -255,14 +231,15 @@ kubectl get pods --kubeconfig config
                                 and call --kubeconfig in command
 ```
 
-### Static Pods
+### 1.11.1. Static Pods
 ```
 kubectl run --restart=Never --image=busybox static-busybox --dry-run -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml                                
                                 # Create a static pod named static-busybox 
                                   that uses the busybox image and 
                                   the command sleep 1000
 ```
-## Managing Nodes
+
+## 1.12. Managing Nodes
 
 ```
 oc get nodes                  # list nodes in a cluster
@@ -289,7 +266,7 @@ kubectl uncordon node-1       # enable scheduling on node
 ```
 
 
-## PV & PVC - PersistentVolume & PersistentVolumeClaim
+## 1.13. PV & PVC - PersistentVolume & PersistentVolumeClaim
 ``` 
 oc get pv                       # list all pv in the cluster
 oc create -f mysqldb-pv.yml     # create a pv with template
@@ -304,13 +281,14 @@ kubectl get pv
 kubectl get pvc
 ```
 
-## oc exec - execute command inside a containe
+## 1.14. oc exec - execute command inside a containe
 ```
 oc exec  <pd> -i -t -- <command> 
                               # run command inside a container without login
                                 eg: oc exec  my-php-app-1mmh1 -i -t -- curl -v http://dbserver:8076
 ```
-## Events and Troubleshooting
+
+## 1.15. Events and Troubleshooting
 ```
 oc get events                 # list events inside cluster
 oc logs POD                   # get logs from pod
@@ -323,13 +301,14 @@ kubectl logs -f POD_NAME CONTAINER_NAME
                                 more than one container inside pod
 ```
 
-## Understand and Help
+## 1.16. Understand and Help
 ```
 oc explain <resource>         # documentation of a resource and its fields
                                 eg: oc explain pod
                                     oc explain pod.spec.volumes.configMap
 ```
-## Applications
+
+## 1.17. Applications
 ```oc new-app``` will create a,
 - dc (deploynment configuration)
 - is (image stream)
@@ -354,7 +333,8 @@ oc get route -n default       # you can see the registry url
 ## 1.2. Get Help
 
 ```
-# oc help                     # list oc command help options
+
+# 2. oc help                     # list oc command help options
 ```
 
 ## 1.3. Build from image
@@ -817,7 +797,7 @@ oc cluster up --metrics=true
 kubectl top node                # memory and CPU usage on node 
 kubectl top pod                 # memory and CPU usage by pods
 
-# Enable metrics in minikube
+# 3. Enable metrics in minikube
 minikube addons enable metrics-server
 ```
 
