@@ -1,4 +1,4 @@
-# OpenShift-Kubernetes-Docker-Cheatsheet
+# 1. OpenShift-Kubernetes-Docker-Cheatsheet
 
 Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker. 
 
@@ -6,7 +6,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - `oc` has support for logging to OpenShift cluster 
 - with `kubectl` you need to create your kubeconfig file with credentials.
 
-[LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
+[iamgini.com](https://www.iamgini.com/) \| [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
 
 <!-- TOC depthfrom:2 orderedlist:false -->
 
@@ -53,24 +53,24 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - [Removing](#removing)
 - [Change triggers](#change-triggers)
 - [OpenShift Builds](#openshift-builds)
-    - [Build strategies](#build-strategies)
-    - [Build sources](#build-sources)
-    - [Build Configurations](#build-configurations)
-    - [S2I](#s2i)
+  - [Build strategies](#build-strategies)
+  - [Build sources](#build-sources)
+  - [Build Configurations](#build-configurations)
+  - [S2I](#s2i)
 - [Troubleshooting](#troubleshooting)
 - [Integrated logging](#integrated-logging)
 - [Simple metrics](#simple-metrics)
 - [Resource scheduling](#resource-scheduling)
 - [Multiproject quota](#multiproject-quota)
 - [Essential Docker Registry Commands](#essential-docker-registry-commands)
-    - [Private Docker Registry and Access](#private-docker-registry-and-access)
+  - [Private Docker Registry and Access](#private-docker-registry-and-access)
 - [Docker Commands](#docker-commands)
 - [Basic Networking](#basic-networking)
 - [Technical Jargons](#technical-jargons)
 
 <!-- /TOC -->
 
-## OpenShift CLI - Installation
+## 1.1. OpenShift CLI - Installation
 ```oc``` command line tool will be installed on all master and node machines during cluster installation. You can also install oc utility on any other machines which is not part of openshift cluster. 
 Download oc cli tool from : https://www.okd.io/download.html
 
@@ -351,26 +351,26 @@ How to find registry ?
 oc get route -n default       # you can see the registry url
 ```
 
-## Get Help
+## 1.2. Get Help
 
 ```
 # oc help                     # list oc command help options
 ```
 
-## Build from image
+## 1.3. Build from image
 
 ```
 oc new-build openshift/nodejs-010-centos7~https://github.com/openshift/nodejs-ex.git --name='newbuildtest'
 ```
 
-## Enable/Disable scheduling
+## 1.4. Enable/Disable scheduling
 
 ```
 oadm manage-node mycbjnode --schedulable=false 
                               # Disable scheduling on node
 ```
 
-## Resource quotas
+## 1.5. Resource quotas
 
 Hard constraints how much memory/CPU your project can consume
 
@@ -386,7 +386,7 @@ oc delete quota -n PROJECT_NAME
                               # delete a quota for the project                            
 ```
 
-## Labels & Annotations
+## 1.6. Labels & Annotations
 
 1. Label examples: release, environment, relationship, dmzbased, tier, node type, user type
     - Identifying metadata consisting of key/value pairs attached to resources
@@ -425,7 +425,7 @@ oc get clusterresourcequota |grep USER
 oc describe clusterresourcequota USER
 ```
 
-## Config View
+## 1.9. Config View
 
 ```
 oc config view                  # command to view your current, full CLI configuration
@@ -442,7 +442,7 @@ kubectl config use-context dev@singapore-cluster
 kubectl config -h               # to list avaialbe options    
 ```
 
-## Managing Environment Variables
+## 1.10. Managing Environment Variables
 
 https://docs.openshift.com/enterprise/3.0/dev_guide/environment_variables.html
 
@@ -453,7 +453,7 @@ oc env rc my-newapp MAX_HEAP_SIZE=128M
                                 # set environment variable for the rc
 ```
 
-## Security Context Constraints
+## 1.11. Security Context Constraints
 
 ```
 oc get scc                      # list all seven SCCs
@@ -467,7 +467,7 @@ oc get scc                      # list all seven SCCs
 oc describe scc SCC_NAME        # can see which all service account enabled.                                      
 ```
 
-## Services & Routes
+## 1.12. Services & Routes
 
 ```
 oc expose service SERVICE_NAME route-name-project-name.default-domain
@@ -485,7 +485,7 @@ oc port-forward POD_NAME 3306:3306
                                 # temporary port-forwarding to a port from local host.
 ```   
 
-## Scaling & AutoScaling of the pod - HorizontalPodAutoscaler
+## 1.13. Scaling & AutoScaling of the pod - HorizontalPodAutoscaler
 
 **OpenShift**
 ```
@@ -514,11 +514,11 @@ kubectl delete replicaset myapp-replicaset
                                 # delete replicaset
 ```
 
-## Configuration Maps (ConfigMap)
+## 1.14. Configuration Maps (ConfigMap)
 
 - Similar to secrets, but with non-sensitive text-based configuration
 
-## Creation of objects
+## 1.15. Creation of objects
 
 ```
 oc create configmap test-config --from-literal=key1=config1 --from-literal=key2=config2 --from-file=filters.properties
@@ -526,13 +526,13 @@ oc create configmap test-config --from-literal=key1=config1 --from-literal=key2=
 oc volume dc/nodejs-ex --add -t configmap -m /etc/config --name=app-config --configmap-name=test-config
 ```
 
-## Reading config maps
+## 1.16. Reading config maps
 
 ```
 oc rsh nodejs-ex-26-44kdm ls /etc/config
 ```
 
-## Dynamically change the config map
+## 1.17. Dynamically change the config map
 
 ```
 oc delete configmap test-config
@@ -542,14 +542,14 @@ oc delete configmap test-config
 <NO NEED FOR MOUNTING AS VOLUME AGAIN>
 ```
 
-## Mounting config map as ENV
+## 1.18. Mounting config map as ENV
 
 ```
 oc set env dc/nodejs-ex --from=configmap/test-config
 oc describe pod nodejs-ex-27-mqurr
 ```
 
-## The Replication Controller
+## 1.19. The Replication Controller
 *to be done*
 
 ```
@@ -577,19 +577,19 @@ oc cluster up \
 oc project myproject
 ```
 
-## Create persistent volume
+## 1.20. Create persistent volume
 
 - Supports stateful applications
 - Volumes backed by shared storage which are mounted into running pods
 - iSCSI, AWS EBS, NFS etc.
 
-## Create volume claim
+## 1.21. Create volume claim
 
 - Manifests that pods use to retreive and mount the volume into pod at initialization time
 
 - Access modes: REadWriteOnce, REadOnlyMany, ReadWriteMany
 
-## Deployments
+## 1.22. Deployments
 ```
 kubectl run blue --image=nginx --replicas=6
                                 # Create a new deployment named blue
@@ -606,21 +606,21 @@ kubectl rollout history deployment/myapp-dc
                                 # history of deployment
 ```
 
-## Deployment strategies
+## 1.23. Deployment strategies
 
-## Rolling
+## 1.24. Rolling
 
-## Triggers
+## 1.25. Triggers
 
-## Recreate
+## 1.26. Recreate
 
-## Custom
+## 1.27. Custom
 
-## Lifecycle hooks
+## 1.28. Lifecycle hooks
 
-## Deployment Pod Resources
+## 1.29. Deployment Pod Resources
 
-## Blue-Green deployments
+## 1.30. Blue-Green deployments
 
 ```
 oc new-app https://github.com/devops-with-openshift/bluegreen#green --name=green
@@ -630,7 +630,7 @@ oc patch route/bluegreen -p '{"spec":{"to":{"name":"green"}}}'
 oc patch route/bluegreen -p '{"spec":{"to":{"name":"blue"}}}'
 ```
 
-## A/B Deployments
+## 1.31. A/B Deployments
 
 ```
 oc annotate route/ab haproxy.router.openshift.io/balance=roundrobin
@@ -638,9 +638,9 @@ oc set route-backends ab cats=100 city=0
 oc set route-backends ab --adjust city=+10%
 ```
 
-## Canary Deployments
+## 1.32. Canary Deployments
 
-## Rollbacks
+## 1.33. Rollbacks
 
 ```
 oc rollback cotd --to-version=1 --dry-run
@@ -650,7 +650,7 @@ oc describe dc cotd
 ```
 
 
-## Pipelines
+## 1.34. Pipelines
 
 ```
 oc new-app jenkins-pipeline-example
@@ -673,11 +673,11 @@ jenkinsPipelineConfig:
 ```  
 - Good resource for Jenkinsfiles: https://github.com/fabric8io/fabric8-jenkinsfile-library
   
-## Configuration Management
+## 1.35. Configuration Management
 
-## Secrets
+## 1.36. Secrets
 
-## Creation
+## 1.37. Creation
 
 - Maximum size 1MB
 
@@ -688,7 +688,7 @@ oc get secrets --show-labels=true
 oc delete secret ssl-secret
 ```
 
-## Using secrets in Pods
+## 1.38. Using secrets in Pods
 
 - Mounting the secret as a volume
 
@@ -705,22 +705,22 @@ oc set env dc/nodejs-ex --from=secret/env-secret
 oc env dc/nodejs-ex --list
 ```
 
-## ENV
+## 1.39. ENV
 
-## Adding
+## 1.40. Adding
 
 ```
 oc set env dc/nodejs-ex ENV=TEST DB_ENV=TEST1 AUTO_COMMIT=true
 oc set env dc/nodejs-ex --list
 ```
 
-## Removing
+## 1.41. Removing
 
 ```
 oc set env dc/nodejs-ex DB_ENV-
 ```
 
-## Change triggers
+## 1.42. Change triggers
 
 1. `ImageChange` - when uderlying image stream changes
 
@@ -728,9 +728,9 @@ oc set env dc/nodejs-ex DB_ENV-
 
 
 
-## OpenShift Builds
+## 1.43. OpenShift Builds
 
-### Build strategies
+### 1.43.1. Build strategies
 
 - Source-to-Image (S2I): uses the opensource S2I tool to enable developers to reporducibly build images by layering the application's soure onto a container image
 
@@ -740,14 +740,14 @@ oc set env dc/nodejs-ex DB_ENV-
 
 - Custom: allows the developer to provide a customized builder image to build runtime image
 
-### Build sources
+### 1.43.2. Build sources
 
 - Git
 - Dockerfile
 - Image
 - Binary
 
-### Build Configurations
+### 1.43.3. Build Configurations
 
 - contains the details of the chosen build strategy as well as the source
 
@@ -759,7 +759,7 @@ oc get bc/nodejs-ex -o yaml
 - unless specified otherwise, the `oc new-app` command will scan the supplied Git repo. If it finds a Dockerfile, the Docker build strategy will be used; otherwise source strategy will be used and an S2I builder will be configured
 
 
-### S2I
+### 1.43.4. S2I
 
 - Components:
 
@@ -779,7 +779,7 @@ oc get bc/nodejs-ex -o yaml
 1. Custom S2I scripts - their own assemble/run etc. by placing scripts in .s2i/bin at the base of the source code, can also contain environment file
 2. Custom S2I builder - write your own custom builder
 
-## Troubleshooting
+## 1.44. Troubleshooting
 
 - Adding the --follow flag to the start-build command
 - oc get builds
@@ -799,7 +799,7 @@ oc adm diagnostics
 2. Cluster operations - cluster managemebt OpenShift/Kubernetes
 3. Application operations - deployments, telemetry, logging
 
-## Integrated logging
+## 1.45. Integrated logging
 
 - the EFK (Elasticsearch/Fluentd/Kibana) stack aggregates logs from nodes and application pods
 
@@ -807,7 +807,7 @@ oc adm diagnostics
 oc cluster up --logging=true
 ```
 
-## Simple metrics
+## 1.46. Simple metrics
 
 - the Kubelet/Heapster/Cassandra and you can use Grafana to build dashboard
 
@@ -821,7 +821,7 @@ kubectl top pod                 # memory and CPU usage by pods
 minikube addons enable metrics-server
 ```
 
-## Resource scheduling
+## 1.47. Resource scheduling
 
 - default behavior:
 
@@ -835,7 +835,7 @@ minikube addons enable metrics-server
 
 
 
-## Multiproject quota
+## 1.48. Multiproject quota
 
 - you may use project labels or annotations when creating multiproject spanning quotas
 
@@ -845,7 +845,7 @@ oc login -u developer -p developer
 oc describe AppliedClusterResourceQuota
 ```
 
-## Essential Docker Registry Commands
+## 1.49. Essential Docker Registry Commands
 ```
 docker login -u USER_NAME -p TOKEN REGISTRY_URL
                                 # before we push images, we need to 
@@ -859,7 +859,8 @@ docker images --no-trunc --format '{{.ID}} {{.CreatedSince}}' --filter "dangling
                                 # list image with format and 
                                 # using multiple filters                                
 ```
-### Private Docker Registry and Access
+
+### 1.49.1. Private Docker Registry and Access
 ```
 kubectl create secret docker-registry private-docker-cred \
     --docker-server=myregistry
@@ -874,7 +875,7 @@ Then specify the image pull secret under the `imagePullSecrets` of pod/deploymen
     - name: private-docker-cred
 ```        
 
-## Docker Commands
+## 1.50. Docker Commands
 
 Image Handling
 ```
@@ -919,7 +920,7 @@ docker rm $(docker ps -a -q)    # Delete all containers that are not currently r
 docker network ls               # list available networks
 ```
 
-## Basic Networking
+## 1.51. Basic Networking
 (For docker/kubernetes/openshift operations)
 
 ```
@@ -953,7 +954,7 @@ ip link add v-net-0 type bridge
                                                                 
 ```
 
-## Technical Jargons
+## 1.52. Technical Jargons
 ```
 OSSM                OpenShift Service Mesh (OSSM)
                     Istio is the upstream project
@@ -980,10 +981,11 @@ FaaS                Function as a Service
 CaaS                Containers as a service          
                     
 ```
-# Points to Remember
+
+# 2. Points to Remember
 - Docker was started as a project by a company called **[dotCloud](https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc)**, made available as open source in March 2013.
 - Kubernetes surfaced from work at Google in 2014, and became the standard way of managing containers.
 
 
-# References
+# 3. References
 - https://cloudowski.com/articles/10-differences-between-openshift-and-kubernetes/
