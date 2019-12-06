@@ -6,7 +6,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 - `oc` has support for logging to OpenShift cluster 
 - with `kubectl` you need to create your kubeconfig file with credentials.
 
-[iamgini.com](https://www.iamgini.com/) \| [LinkedIn](http://bit.ly/gineesh) \| [www.techbeatly.com](https://www.techbeatly.com)
+[iamgini.com](https://www.iamgini.com/) \| [LinkedIn](http://bit.ly/gineesh) \| [techbeatly.com](https://www.techbeatly.com)
 
 <!-- TOC updateonsave:true depthfrom:2 depthto:3 orderedlist:true -->
 
