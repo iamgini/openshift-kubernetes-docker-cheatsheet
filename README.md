@@ -8,6 +8,8 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 
 [iamgini.com](https://www.iamgini.com/) \| [LinkedIn](http://bit.ly/gineesh) \| [techbeatly.com](https://www.techbeatly.com)
 
+**References**
+ - [Developer CLI Commands](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.1/html/cli_reference/cli-developer-commands)
 <!-- TOC updateonsave:true depthfrom:2 depthto:3 orderedlist:true -->
 
 - [1.1. CLI Installation](#11-cli-installation)
@@ -384,7 +386,7 @@ oc exec  <pd> -i -t -- <command>
 oc get events                 # list events inside cluster
 oc logs POD                   # get logs from pod
 oc logs <pod> --timestamps    
-oc logs -f bc/myappx           
+oc logs -f bc/myappx          # check logs of bc
 oc rsh <pod>                  # login to a pod
 
 kubectl logs -f POD_NAME CONTAINER_NAME
@@ -407,26 +409,27 @@ oc explain <resource>         # documentation of a resource and its fields
 - svc (service)
 
 ```
+oc new-app -h                     # list all options and examples
 oc new-app mysql MYSQL_USER=user MYSQL_PASSWORD=pass MYSQL_DATABASE=mydb -l db=mysql
-                              # create a new application
+                                  # create a new application
 oc new-app --docker-image=myregistry.example.com/dockers/myapp --name=myapp
-                              # create a new application from private registry
+                                  # create a new application from private registry
 oc new-app https://github.com/techbeatly/python-hello-world --name=python-hello
-                              # create a new application from source code (s2i)
-                              # -i or --image-stream=[] : Name of an image stream to use in the app
+                                  # create a new application from source code (s2i)
+                                  # -i or --image-stream=[] : Name of an image stream to use in the app
 ```
 
 How to find registry ?
 
 ```
-oc get route -n default       # you can see the registry url
+oc get route -n default           # you can see the registry url
 ```
 
 ## 1.18. Get Help
 
 ```
 
-# 2. oc help                     # list oc command help options
+# 2. oc help                      # list oc command help options
 ```
 
 ## 1.19. Build from image
