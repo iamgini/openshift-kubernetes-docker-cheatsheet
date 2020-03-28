@@ -1,11 +1,11 @@
 
-Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker. 
+**Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker. **
 
 Most of the time `oc` and `kubectl` shares the same command set but some cases we have some differences. 
 - `oc` has support for logging to OpenShift cluster
 - with `kubectl` you need to create your kubeconfig file with credentials.
 
-Read more OpenShift articles and How-to's on [techbeatly.com](https://www.techbeatly.com/category/cloud/openshift)
+**Read more OpenShift articles and How-to's on [techbeatly.com](https://www.techbeatly.com/category/cloud/openshift)**
 
 **References**
  - [Developer CLI Commands](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.1/html/cli_reference/cli-developer-commands)
