@@ -92,10 +92,6 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
   - [Essential Docker Registry Commands](#essential-docker-registry-commands)
     - [Private Docker Registry and Access](#private-docker-registry-and-access)
   - [Docker Commands](#docker-commands)
-    - [Image Handling](#image-handling)
-    - [Running Containers](#running-containers)
-    - [Docker Utilities](#docker-utilities)
-    - [Cleaning Docker Environment](#cleaning-docker-environment)
   - [Basic Networking](#basic-networking)
   - [Technical Jargons](#technical-jargons)
   - [Points to Remember](#points-to-remember)
@@ -957,52 +953,8 @@ Then specify the image pull secret under the `imagePullSecrets` of pod/deploymen
 
 ## Docker Commands
 
-### Image Handling
+Docker commands Dockerfile references are moved to [iamgini.com/docker-cheat-sheet](https://www.iamgini.com/docker-cheat-sheet).
 
-```
-docker create [IMAGE]           # Create a new container from a particular image.
-docker search [term]            # Search the Docker Hub repository for a particular term.
-docker login                    # Log into the Docker Hub repository.
-docker pull [IMAGE]             # Pull an image from the Docker Hub repository.
-docker push [username/image]    # Push an image to the Docker Hub repository.
-docker tag [source] [target]    # Create a target tag or alias that refers to a source image.
-```
-
-### Running Containers
-
-```
-docker start [CONTAINER]        # Start a particular container.
-docker stop [CONTAINER]         # Stop a particular container.
-docker exec -ti [CONTAINER] [command]
-                                # Run a shell command inside a particular container.
-docker run -ti — image [IMAGE] [CONTAINER] [command]
-                                # Create and start a container at the same time, and then run a command inside it.
-docker run -ti — rm — image [IMAGE] [CONTAINER] [command]
-                                # Create and start a container at the same time, 
-                                # run a command inside it, and then remove the container 
-                                # after executing the command.
-docker pause [CONTAINER]        # Pause all processes running within a particular container.
-```
-
-### Docker Utilities
-
-```
-docker history [IMAGE]          # Display the history of a particular image.
-docker ps                       # List all of the containers that are currently running.
-docker version                  # Display the version of Docker that is currently installed on the system.
-docker images                   # List all of the images that are currently stored on the system.
-docker inspect [object]         # Display low-level information about a particular Docker object.
-```
-
-### Cleaning Docker Environment
-
-```
-docker kill [CONTAINER]         # Kill a particular container.
-docker kill $(docker ps -q)     # Kill all containers that are currently running.
-docker rm [CONTAINER]           # Delete a particular container that is not currently running.
-docker rm $(docker ps -a -q)    # Delete all containers that are not currently running.
-docker network ls               # list available networks
-```
 
 ## Basic Networking
 (For docker/kubernetes/openshift operations)
