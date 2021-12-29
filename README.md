@@ -1019,6 +1019,7 @@ CaaS                Containers as a service
 ```
 
 ## Points to Remember
+
 - Docker was started as a project by a company called **[dotCloud](https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc)**, made available as open source in March 2013.
 - Kubernetes surfaced from work at Google in 2014, and became the standard way of managing containers.
 
