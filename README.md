@@ -102,6 +102,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
     - [Pod Logs](#pod-logs)
     - [Troubleshoting containers](#troubleshoting-containers)
     - [Debug levels](#debug-levels)
+    - [StorageClass & Persistent Storage](#storageclass--persistent-storage)
 
 <!-- /TOC -->
 
@@ -1088,3 +1089,17 @@ oc port-forward pod-name local-port:remote-port
 ```shell
 oc get pods --loglevel 6      # or 10
 ``` 
+
+### StorageClass & Persistent Storage
+
+```shell
+oc get storageclass
+
+oc set volumes deployment/example-application \
+  --add --name example-pv-storage \
+  --type pvc --claim-class nfs-storage \
+  --claim-mode rwo \
+  --claim-size 15Gi \
+  --mount-path /var/lib/example-app \
+  --claim-name example-pv-claim
+```
