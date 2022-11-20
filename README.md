@@ -104,6 +104,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
     - [Debug levels](#debug-levels)
     - [StorageClass & Persistent Storage](#storageclass--persistent-storage)
     - [Networking](#networking)
+  - [Acronyms](#acronyms)
 
 <!-- /TOC -->
 
@@ -1113,3 +1114,7 @@ Cluster Network Operator
 ```shell
 oc get network/cluster -o yaml
 ```
+
+## Acronyms
+
+MCS- Machine Configuration Server
