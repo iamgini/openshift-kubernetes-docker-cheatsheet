@@ -1,4 +1,4 @@
-# OpenShift-Kubernetes-Docker-Cheatsheet
+# OpenShift, Kubernetes, Docker Cheat sheet
 
 **Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker.**
 
@@ -16,7 +16,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 **Table of Contents**
 <!-- TOC updateonsave:true depthfrom:2 depthto:3 orderedlist:false -->
 
-- [OpenShift-Kubernetes-Docker-Cheatsheet](#openshift-kubernetes-docker-cheatsheet)
+- [OpenShift, Kubernetes, Docker Cheat sheet](#openshift-kubernetes-docker-cheat-sheet)
   - [CLI Installation](#cli-installation)
     - [OpenShift CLI Installation](#openshift-cli-installation)
     - [Install and Set Up kubectl](#install-and-set-up-kubectl)
