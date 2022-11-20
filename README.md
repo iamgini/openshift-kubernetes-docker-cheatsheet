@@ -20,7 +20,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
   - [CLI Installation](#cli-installation)
     - [OpenShift CLI Installation](#openshift-cli-installation)
     - [Install and Set Up kubectl](#install-and-set-up-kubectl)
-  - [Basic Structure of OpenShift/Kubernetes defenition file](#basic-structure-of-openshiftkubernetes-defenition-file)
+  - [Basic Structure of OpenShift/Kubernetes definition file](#basic-structure-of-openshiftkubernetes-definition-file)
   - [Login and Logout](#login-and-logout)
   - [oc status](#oc-status)
   - [Managing Projects](#managing-projects)
@@ -95,6 +95,13 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
   - [Basic Networking](#basic-networking)
   - [Technical Jargons](#technical-jargons)
   - [Points to Remember](#points-to-remember)
+  - [OpenShift 4 (to be moved to above sub-sections later)](#openshift-4-to-be-moved-to-above-sub-sections-later)
+    - [Cluster Details](#cluster-details)
+    - [Check logs of systemd services](#check-logs-of-systemd-services)
+    - [Run commands on nodes](#run-commands-on-nodes)
+    - [Pod Logs](#pod-logs)
+    - [Troubleshoting containers](#troubleshoting-containers)
+    - [Debug levels](#debug-levels)
 
 <!-- /TOC -->
 
@@ -143,7 +150,7 @@ Test to ensure the version you installed is up-to-date:
 kubectl version
 ```
 
-## Basic Structure of OpenShift/Kubernetes defenition file
+## Basic Structure of OpenShift/Kubernetes definition file
 
 (below one is a service definition)
 
@@ -169,6 +176,7 @@ spec:
 oc login https://10.142.0.2:8443 -u admin -p openshift 
                               # Login to openshift cluster
 oc whoami                     # identify the current login
+oc whoami -t                  # get token
 oc login -u system:admin      # login to cluster from any master node without a password
 oc logout                     # logout from cluster
 ```
@@ -179,6 +187,7 @@ oc logout                     # logout from cluster
 oc status -v                  # get oc cluster status
 oc types                      # to list all concepts and types
 ```
+
 
 ## Managing Projects
 
@@ -507,7 +516,9 @@ oc describe clusterresourcequota USER
 
 ```
 oc config view                  # command to view your current, full CLI configuration
-                                  also can see the cluster url, project url etc.
+                                # also can see the cluster url, project url etc.
+oc config get-contexts          # lists the contexts in the kubeconfig file.
+                                  
 
 kubectl config view             # to view the config in ~/.kube/config
 
@@ -1024,3 +1035,56 @@ CaaS                Containers as a service
 - Kubernetes surfaced from work at Google in 2014, and became the standard way of managing containers.
 
 
+
+## OpenShift 4 (to be moved to above sub-sections later)
+
+### Cluster Details
+
+```shell
+oc get clusterversion         # retrieve the cluster version
+oc get clusteroperators       # retrieve the list of all cluster operators
+```
+
+### Check logs of systemd services
+
+```shell
+oc adm node-logs -u crio my-node-name
+oc adm node-logs -u kubelet my-node-name
+
+oc adm node-logs my-node-name
+                              # display all journal logs of a node
+```
+
+### Run commands on nodes
+
+```shell
+oc debug node/my-node-name
+...output omitted...
+sh-4.4# chroot /host
+sh-4.4# systemctl is-active kubelet
+
+sh-4.4# toolbox               # start toolbox container
+```
+
+### Pod Logs
+
+```shell
+oc logs pod-name
+oc logs pod-name container-name
+
+oc debug deployment/deployment-name --as-root
+                              # debug pod for the application
+```
+
+### Troubleshoting containers
+
+```shell
+oc rsh pod-name
+oc cp /source pod-name:/destination
+oc port-forward pod-name local-port:remote-port
+```
+### Debug levels
+
+```shell
+oc get pods --loglevel 6      # or 10
+``` 
