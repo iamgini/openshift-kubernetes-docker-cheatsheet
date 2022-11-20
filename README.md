@@ -103,6 +103,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
     - [Troubleshoting containers](#troubleshoting-containers)
     - [Debug levels](#debug-levels)
     - [StorageClass & Persistent Storage](#storageclass--persistent-storage)
+    - [Networking](#networking)
 
 <!-- /TOC -->
 
@@ -178,6 +179,7 @@ oc login https://10.142.0.2:8443 -u admin -p openshift
                               # Login to openshift cluster
 oc whoami                     # identify the current login
 oc whoami -t                  # get token
+oc whoami --show-console      # show console URL
 oc login -u system:admin      # login to cluster from any master node without a password
 oc logout                     # logout from cluster
 ```
@@ -1102,4 +1104,12 @@ oc set volumes deployment/example-application \
   --claim-size 15Gi \
   --mount-path /var/lib/example-app \
   --claim-name example-pv-claim
+```
+
+### Networking
+
+Cluster Network Operator
+
+```shell
+oc get network/cluster -o yaml
 ```
