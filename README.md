@@ -1109,7 +1109,7 @@ oc set volumes deployment/example-application \
 
 ### Networking
 
-Cluster Network Operator
+Cluster Network Operator (to see the pod network, service network and so on)
 
 ```shell
 oc get network/cluster -o yaml
