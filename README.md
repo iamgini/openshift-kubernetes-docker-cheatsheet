@@ -2,7 +2,7 @@
 
 **Comprehensive CLI Cheatsheet for OpenShift, Kubernetes and Docker.**
 
-Most of the time `oc` and `kubectl` shares the same command set but some cases we have some differences. 
+Most of the time `oc` and `kubectl` shares the same command set but some cases we have some differences.
 - `oc` has support for logging to OpenShift cluster
 - with `kubectl` you need to create your kubeconfig file with credentials.
 
@@ -26,14 +26,14 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
   - [Managing Projects](#managing-projects)
   - [Viewing, Finding Resources](#viewing-finding-resources)
   - [Taints and Tolerations](#taints-and-tolerations)
-  - [Controlling Access & Managing Users](#controlling-access--managing-users)
+  - [Controlling Access \& Managing Users](#controlling-access--managing-users)
     - [Check Access](#check-access)
   - [oc describe](#oc-describe)
   - [oc export](#oc-export)
   - [Managing pods](#managing-pods)
     - [Static Pods](#static-pods)
   - [Managing Nodes](#managing-nodes)
-  - [PV & PVC - PersistentVolume & PersistentVolumeClaim](#pv--pvc---persistentvolume--persistentvolumeclaim)
+  - [PV \& PVC - PersistentVolume \& PersistentVolumeClaim](#pv--pvc---persistentvolume--persistentvolumeclaim)
   - [oc exec - execute command inside a containe](#oc-exec---execute-command-inside-a-containe)
   - [Events and Troubleshooting](#events-and-troubleshooting)
   - [Help and Understand](#help-and-understand)
@@ -42,14 +42,14 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
   - [Build from image](#build-from-image)
   - [Enable/Disable scheduling](#enabledisable-scheduling)
   - [Resource quotas](#resource-quotas)
-  - [Labels & Annotations](#labels--annotations)
+  - [Labels \& Annotations](#labels--annotations)
   - [Limit ranges](#limit-ranges)
   - [ClusterQuota or ClusterResourceQuota](#clusterquota-or-clusterresourcequota)
   - [Config View](#config-view)
   - [Managing Environment Variables](#managing-environment-variables)
   - [Security Context Constraints](#security-context-constraints)
-  - [Services & Routes](#services--routes)
-  - [Scaling & AutoScaling of the pod - HorizontalPodAutoscaler](#scaling--autoscaling-of-the-pod---horizontalpodautoscaler)
+  - [Services \& Routes](#services--routes)
+  - [Scaling \& AutoScaling of the pod - HorizontalPodAutoscaler](#scaling--autoscaling-of-the-pod---horizontalpodautoscaler)
   - [Configuration Maps (ConfigMap)](#configuration-maps-configmap)
   - [Creation of objects](#creation-of-objects)
   - [Reading config maps](#reading-config-maps)
@@ -102,7 +102,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
     - [Pod Logs](#pod-logs)
     - [Troubleshoting containers](#troubleshoting-containers)
     - [Debug levels](#debug-levels)
-    - [StorageClass & Persistent Storage](#storageclass--persistent-storage)
+    - [StorageClass \& Persistent Storage](#storageclass--persistent-storage)
     - [Networking](#networking)
   - [Acronyms](#acronyms)
 
@@ -112,7 +112,7 @@ Most of the time `oc` and `kubectl` shares the same command set but some cases w
 
 ### OpenShift CLI Installation
 
-`oc` command line tool will be installed on all master and node machines during cluster installation. You can also install oc utility on any other machines which is not part of openshift cluster. 
+`oc` command line tool will be installed on all master and node machines during cluster installation. You can also install oc utility on any other machines which is not part of openshift cluster.
 Download oc cli tool from : https://www.okd.io/download.html
 
 On a RHEL system with valid subscription you can install with yum as below.
@@ -160,7 +160,7 @@ kubectl version
 ```
 apiVersion: v1
 kind: Service
-metadata: 
+metadata:
   name: my-service
 spec:
   type: NodePort
@@ -176,13 +176,17 @@ spec:
 ## Login and Logout
 
 ```
-oc login https://10.142.0.2:8443 -u admin -p openshift 
+oc login <cluster-api>:<port> -u admin -p openshift
                               # Login to openshift cluster
 oc whoami                     # identify the current login
 oc whoami -t                  # get token
 oc whoami --show-console      # show console URL
 oc login -u system:admin      # login to cluster from any master node without a password
 oc logout                     # logout from cluster
+
+kubectl auth whoami           # Check who you are and your attributes
+                              # (groups, extra).
+
 ```
 
 ## oc status
@@ -199,10 +203,10 @@ oc types                      # to list all concepts and types
 oc get projects               # list Existing Projects
 oc get project                # Display current project
 oc project myproject          # switch to a project
-oc new-project testlab --display-name='testlab' --description='testlab'        
+oc new-project testlab --display-name='testlab' --description='testlab'
                               # create a new project
 oc adm new-project testlab --node-selector='project101=testlab'
-                              # create a new project with node-selector. 
+                              # create a new project with node-selector.
                               # Project pods will be created only those nodes with a label "project101=testlab"
 oc delete project testlab     # delete a project
 oc delete all --all           # delete all from a project
@@ -214,14 +218,14 @@ oc delete all -l app=web      # delete all where label app=web
 ```
 oc get all                    # list all resource items
                                 -w  watches the result output in realtime.
-oc process                    # process a template into list of resources.                              
+oc process                    # process a template into list of resources.
 ```
 
 ## Taints and Tolerations
 ```
 kubectl taint nodes node1 app=blue:NoSchedule
                               # Apply taint on node
-kubectl taint nodes node1 app=blue:NoSchedule-                               
+kubectl taint nodes node1 app=blue:NoSchedule-
                               # untaint a node by using "-" at the end.
 ```
 
@@ -236,21 +240,21 @@ oc adm add-role-to-user ROLE_NAME USERNAME -n PROJECT_NAME
 eg:
 oc adm add-role-to-user edit demo-user -n demo-project
 oc adm policy add-cluster-role-to-user cluster-admin develoer
-                              # add cluster-admin role to the user developer                              
+                              # add cluster-admin role to the user developer
 oc adm policy remove-cluster-role-from-group \
   self-provisioner \
   system:authenticated \
   system:authenticated:oauth
                               # remove role from a group
 oc get sa                     # list all service accounts
-oc get cluserrole             # list all cluster rolesrole  
+oc get cluserrole             # list all cluster rolesrole
 oc get rolebinding -n PROJECT_NAME
                               # list all roles details for the project
 oc describe policybindings :default -n PROJECT_NAME
-                              # OCP 3.7 < show details of a project policy details 
+                              # OCP 3.7 < show details of a project policy details
 oc describe rolebinding.rbac -n PROJECT_NAME
-                              # OCP 3.7 > show details of a project policy details  
-oc describe user USER_NAME    # details of a user    
+                              # OCP 3.7 > show details of a project policy details
+oc describe user USER_NAME    # details of a user
 oc adm policy who-can edit pod -n PROJECT_NAME
                               # list details of access
 ```
@@ -262,33 +266,33 @@ htpasswd -b /etc/origin/master/htpasswd user1 password1
                               # -b used to take password from command line rather than promopting for it.
 htpasswd -D /etc/origin/master/htpasswd user1
                               # -D deletes user1
-```  
+```
 
 ### Check Access
 
 ```
 kubectl auth can-i create deployments
-                                      # check access 
+                                      # check access
 kubectl auth can-i create deployments \
   --as user1
                                       # check access for a user
 kubectl auth can-i create deployments \
   --as user1 \
-  --namespace dev                     
+  --namespace dev
                                       # check access for a user in a namespace
 ```
 
-                            
 
-## oc describe 
+
+## oc describe
 ```
 oc describe node <node1>      # show deatils of a specific resource
-oc describe pod POD_NAME      # pod details                               
-oc describe svc SERVICE_NAME  # service details                               
-oc describe route ROUTE_NAME  # route details                               
+oc describe pod POD_NAME      # pod details
+oc describe svc SERVICE_NAME  # service details
+oc describe route ROUTE_NAME  # route details
 ```
 
-## oc export 
+## oc export
 ```
 oc export RESOURCE_TYPE RESOURCE_NAME -o OUTPUT_FORMAT
                               # export a definition of a resource (creating a backup etc) in JSON or YAML format.
@@ -316,16 +320,16 @@ oc adm manage-node NODE_NAME --list-pods
                               # list all pods running on specific node
 oc rollout history dc/<name>  # available revisions
 oc rollout latest hello       # deploy a new version of app.
-oc rollout undo dc/<name>     # rollback to the last successful 
+oc rollout undo dc/<name>     # rollback to the last successful
                                 deployed revision of your configuration
-oc rollout cancel dc/hello    # cancel current depoyment 
+oc rollout cancel dc/hello    # cancel current depoyment
 
 oc delete pod POD_NAME -n PROJECT_NAME --grace-period=0 --force
                               # delete a pod forcefully
-                                if pod still stays in Terminating state, 
+                                if pod still stays in Terminating state,
                                 try replace deletionTimestamp: null
-                                as well as finalizers: null  
-                                (it may contain an item foregroundDeletion, 
+                                as well as finalizers: null
+                                (it may contain an item foregroundDeletion,
                                 remove that)
 kubectl get pods \
   --server kubesandbox:6443 \
@@ -334,16 +338,16 @@ kubectl get pods \
   --certificate-authority ca.cert
                               #  specify credential and certificate details.
 
-kubectl get pods --kubeconfig config                              
+kubectl get pods --kubeconfig config
                               # or put those info inside a file `config` \
                                 and call --kubeconfig in command
 ```
 
 ### Static Pods
 ```
-kubectl run --restart=Never --image=busybox static-busybox --dry-run -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml                                
-                                # Create a static pod named static-busybox 
-                                  that uses the busybox image and 
+kubectl run --restart=Never --image=busybox static-busybox --dry-run -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+                                # Create a static pod named static-busybox
+                                  that uses the busybox image and
                                   the command sleep 1000
 ```
 
@@ -361,22 +365,22 @@ oc get nodes -L region -L env
 oadm manage-node compute-102 --schedulable=false
 kubectl cordon node-2
                               # make a node unschedulable
-                              
-oc adm drain compute-102                              
+
+oc adm drain compute-102
 kubectl drain node-1          # drain node by evicting pods
                               -–force — force deletion of bare pods
-                              –-delete-local-data — delete even if there are 
+                              –-delete-local-data — delete even if there are
                                 pods using emptyDir (local data that will be deleted
                                 when the node is drained)
                               -–ignore-daemonsets — ignore daemonset-managed pods
-                              
+
 oadm manage-node compute-102 --schedulable=true
 kubectl uncordon node-1       # enable scheduling on node
 ```
 
 
 ## PV & PVC - PersistentVolume & PersistentVolumeClaim
-``` 
+```
 oc get pv                       # list all pv in the cluster
 oc create -f mysqldb-pv.yml     # create a pv with template
 oc get pvc -n PROJECT_NAME      # list all pvc in the project
@@ -392,7 +396,7 @@ kubectl get pvc
 
 ## oc exec - execute command inside a containe
 ```
-oc exec  <pd> -i -t -- <command> 
+oc exec  <pd> -i -t -- <command>
                               # run command inside a container without login
                                 eg: oc exec  my-php-app-1mmh1 -i -t -- curl -v http://dbserver:8076
 ```
@@ -401,7 +405,7 @@ oc exec  <pd> -i -t -- <command>
 ```
 oc get events                 # list events inside cluster
 oc logs POD                   # get logs from pod
-oc logs <pod> --timestamps    
+oc logs <pod> --timestamps
 oc logs -f bc/myappx          # check logs of bc
 oc rsh <pod>                  # login to a pod
 
@@ -457,7 +461,7 @@ oc new-build openshift/nodejs-010-centos7~https://github.com/openshift/nodejs-ex
 ## Enable/Disable scheduling
 
 ```
-oadm manage-node mycbjnode --schedulable=false 
+oadm manage-node mycbjnode --schedulable=false
                               # Disable scheduling on node
 ```
 
@@ -471,10 +475,10 @@ oc create -f <YAML_FILE_with_kind: ResourceQuota> -n PROJECT_NAME
                               # Sample : https://github.com/ginigangadharan/openshift-cli-cheatsheet/blob/master/quota-template-32Gi_no_limit.yaml
 oc describe quota -n PROJECT_NAME
                               # describe the quota details
-oc get quota -n PROJECT_NAME  
+oc get quota -n PROJECT_NAME
                               # get quota details of the project
-oc delete quota -n PROJECT_NAME 
-                              # delete a quota for the project                            
+oc delete quota -n PROJECT_NAME
+                              # delete a quota for the project
 ```
 
 ## Labels & Annotations
@@ -492,7 +496,7 @@ oc patch node NODE_NAME -p '{"metadata": {"labels": {"project101":"testlab"}}}'
 oc patch dc myapp --patch '{"spec":{"template":{"nodeselector":{"env":"qa"}}}'
                               # modify dc to run pods only on nodes where label 'evn':'qa'
 oc label secret ssl-secret env=test
-                              # add label                              
+                              # add label
 ```
 
 ## Limit ranges
@@ -522,17 +526,17 @@ oc describe clusterresourcequota USER
 oc config view                  # command to view your current, full CLI configuration
                                 # also can see the cluster url, project url etc.
 oc config get-contexts          # lists the contexts in the kubeconfig file.
-                                  
+
 
 kubectl config view             # to view the config in ~/.kube/config
 
 kubectl config view --kubeconfig=path-to-config-file
                                 # to view the config
 
-kubectl config use-context dev@singapore-cluster                              
-                                # to change the current-context 
-                                
-kubectl config -h               # to list avaialbe options    
+kubectl config use-context dev@singapore-cluster
+                                # to change the current-context
+
+kubectl config -h               # to list avaialbe options
 ```
 
 ## Managing Environment Variables
@@ -553,11 +557,11 @@ oc get scc                      # list all seven SCCs
                                       - anyuid
                                       - hostaccess
                                       - Hostmount-anyuid
-                                      - hostnetwork    	
+                                      - hostnetwork
                                       - nonroot
                                       - privileged
                                       - restricted
-oc describe scc SCC_NAME        # can see which all service account enabled.                                      
+oc describe scc SCC_NAME        # can see which all service account enabled.
 ```
 
 ## Services & Routes
@@ -576,13 +580,13 @@ oc expose service myapache --name=myapache --hostname=myapache.app.cloudapps.exa
 
 oc port-forward POD_NAME 3306:3306
                                 # temporary port-forwarding to a port from local host.
-```   
+```
 
 ## Scaling & AutoScaling of the pod - HorizontalPodAutoscaler
 
 **OpenShift**
 ```
-oc scale dc/APP_NAME --replicas=2                              
+oc scale dc/APP_NAME --replicas=2
                                 # scale application (increase or decrease replicas)
 oc autoscale dc my-app --min 1 --max 4 --cpu-percent=75
                                 # enable autoscaling for my-app
@@ -595,13 +599,13 @@ oc describe hpa/my-app
 kubectl create -f replicaset-defenition.yml
                                 # create replicaset
 kubectl create -f replicaset-defenition.yml -namespace=YOUR_NAMESPACE
-                              # create in a specific namespace                         
+                              # create in a specific namespace
 kubectl replace -f replicaset-defenition.yml
                                 # change the replicas option in replicaset defenition
                                 # and then run it
 kubectl scale --replicas=6 -f replicaset-defenition.yml
 kubectl scale --replicas=6 replicaset myapp-replicaset
-                                # this one will not update replica details 
+                                # this one will not update replica details
                                 # in replicaset defenition file
 kubectl delete replicaset myapp-replicaset
                                 # delete replicaset
@@ -687,15 +691,15 @@ oc project myproject
 kubectl run blue --image=nginx --replicas=6
                                 # Create a new deployment named blue
                                   with nginx image and 6 replicas
-kubectl set image deployment/myapp-dc                                
+kubectl set image deployment/myapp-dc
                                 # specify new image to deployment
-kubectl apply -f DEFINITION.YML                                
+kubectl apply -f DEFINITION.YML
                                 # apply new config to existing deployment
-kubectl rollout undo deployment/myapp-dc                                
+kubectl rollout undo deployment/myapp-dc
                                 # rollback a deployment
-kubectl rollout status deployment/myapp-dc                                
+kubectl rollout status deployment/myapp-dc
                                 # status of deployment
-kubectl rollout history deployment/myapp-dc                                
+kubectl rollout history deployment/myapp-dc
                                 # history of deployment
 ```
 
@@ -761,9 +765,9 @@ jenkinsPipelineConfig:
   serviceName: jenkins
   templateName: jenkins-ephemeral
   templateNamespace: openshift
-```  
+```
 - Good resource for Jenkinsfiles: https://github.com/fabric8io/fabric8-jenkinsfile-library
-  
+
 ## Configuration Management
 
 ## Secrets
@@ -905,7 +909,7 @@ oc cluster up --logging=true
 ```
 oc cluster up --metrics=true
 
-kubectl top node                # memory and CPU usage on node 
+kubectl top node                # memory and CPU usage on node
 kubectl top pod                 # memory and CPU usage by pods
 
 # 3. Enable metrics in minikube
@@ -939,16 +943,16 @@ oc describe AppliedClusterResourceQuota
 ## Essential Docker Registry Commands
 ```
 docker login -u USER_NAME -p TOKEN REGISTRY_URL
-                                # before we push images, we need to 
+                                # before we push images, we need to
                                   login to docker registry.
-                                  
+
 docker login -u developer -p ${TOKEN} \
-  docker-registry-default.apps.lab.example.com                                
+  docker-registry-default.apps.lab.example.com
                                 # TOKEN can be get as TOKEN=$(oc whoami)
-                                
+
 docker images --no-trunc --format '{{.ID}} {{.CreatedSince}}' --filter "dangling=true" --filter "before=IMAGE_ID"
-                                # list image with format and 
-                                # using multiple filters                                
+                                # list image with format and
+                                # using multiple filters
 ```
 
 ### Private Docker Registry and Access
@@ -964,7 +968,7 @@ Then specify the image pull secret under the `imagePullSecrets` of pod/deploymen
 ```
     imagePullSecrets:
     - name: private-docker-cred
-```        
+```
 
 ## Docker Commands
 
@@ -980,7 +984,7 @@ ip addr add 10.1.10.10/24 dev eth0
                                 # assign IP to an interface
 ip route add 10.1.20.0/24 via 10.1.10.1
                                 # add a route to another network 10.1.20.0/24
-                                  via 10.1.10.1 which is our router/gateway.   
+                                  via 10.1.10.1 which is our router/gateway.
 ip route add default via 10.1.10.1
                                 # add defaulr route to any network; like internet
                                   you can also mention 0.0.0.0/0 instead of default
@@ -992,28 +996,28 @@ ip netns exec red ping IP_ADDRESS
 ip netns exec newnamespace ip link
                                 # display details inside namespace
 ip link add veth-red type veth peer name veth-blue
-                                # create a pipe or virtual eth (veth) 
-ip link set veth-red netns red  
-                                # attach the virtual interface to a namespace          
+                                # create a pipe or virtual eth (veth)
+ip link set veth-red netns red
+                                # attach the virtual interface to a namespace
 ip -n red addr add 10.1.10.1 dev veth-red
-                                # assign ip for virtual interface (veth) 
-                                  inside a namespace                                
+                                # assign ip for virtual interface (veth)
+                                  inside a namespace
 ip -n red link set veth-red up
                                 # make virtual interface up and running
-ip link add v-net-0 type bridge 
+ip link add v-net-0 type bridge
                                 # add linux bridge
-                                                                
+
 ```
 
 ## Technical Jargons
 ```
 OSSM                OpenShift Service Mesh (OSSM)
                     Istio is the upstream project
-                    - The upstream Istio community installation automatically 
+                    - The upstream Istio community installation automatically
                       injects the sidecar to namespaces you have labeled.
-                    - Red Hat OpenShift Service Mesh does not automatically 
-                      inject the sidecar to any namespaces, but requires you to 
-                      specify the sidecar.istio.io/inject annotation as 
+                    - Red Hat OpenShift Service Mesh does not automatically
+                      inject the sidecar to any namespaces, but requires you to
+                      specify the sidecar.istio.io/inject annotation as
                       illustrated in the Automatic sidecar injection section.
 
 CRI-O               Container Runtime Interface
@@ -1026,11 +1030,11 @@ kiali               observability console for Istio
                     -  How are they connected?
                     -  How are they performing?
 
-runc                CLI tool for spawning and running 
+runc                CLI tool for spawning and running
                     containers according to the OCI specification.
 FaaS                Function as a Service
-CaaS                Containers as a service          
-                    
+CaaS                Containers as a service
+
 ```
 
 ## Points to Remember
@@ -1091,7 +1095,7 @@ oc port-forward pod-name local-port:remote-port
 
 ```shell
 oc get pods --loglevel 6      # or 10
-``` 
+```
 
 ### StorageClass & Persistent Storage
 
